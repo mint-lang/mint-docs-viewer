@@ -17,6 +17,10 @@ component Documentation.Sidebar.Item {
     }
   }
 
+  style span {
+    line-height: 13px;
+  }
+
   style badge {
     background-color: {badgeColor};
     justify-content: center;
@@ -45,7 +49,7 @@ component Documentation.Sidebar.Item {
         <{ "C" }>
       </div>
 
-      <span>
+      <span::span>
         <{ name }>
       </span>
     </div>

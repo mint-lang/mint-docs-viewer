@@ -7,8 +7,14 @@ component Main {
 
   style base {
     font-family: sans-serif;
+    flex-direction: column;
     min-height: 100vh;
     display: flex;
+  }
+
+  style content {
+    display: flex;
+    flex: 1;
   }
 
   get content : Html {
@@ -17,8 +23,12 @@ component Main {
 
   fun render : Html {
     <div::base>
-      <Documentation.Sidebar/>
-      <{ content }>
+      <Documentation.Tabs/>
+
+      <div::content>
+        <Documentation.Sidebar/>
+        <{ content }>
+      </div>
     </div>
   }
 }
