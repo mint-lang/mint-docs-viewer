@@ -12,6 +12,7 @@ record Component {
 
 record Method {
   arguments : Array(Argument),
+  description : Maybe(String),
   source : String,
   name : String,
   type : String
@@ -23,6 +24,7 @@ record Argument {
 }
 
 record Module {
+  description : Maybe(String),
   functions : Array(Method),
   name : String
 }
@@ -31,6 +33,7 @@ record Content {
   properties : Array(Property),
   type : Documentation.Type,
   functions : Array(Method),
+  description : String,
   name : String
 }
 
@@ -52,6 +55,7 @@ module Content {
       properties = [],
       type = Documentation.Type::Component,
       functions = [],
+      description = "",
       name = ""
     }
   }

@@ -7,7 +7,13 @@ component Documentation.Content {
   }
 
   style title {
+    border-bottom: 2px solid #EEE;
+    padding-bottom: 10px;
     font-size: 30px;
+  }
+
+  style description {
+
   }
 
   fun render : Html {
@@ -16,14 +22,20 @@ component Documentation.Content {
         <{ selected.name }>
       </div>
 
+      <div::description>
+        <Markdown content={selected.description}/>
+      </div>
+
       <{ methods }>
     </div>
   } where {
     methods =
       selected.functions
+      |> Array.sortBy(\method : Method => method.name)
       |> Array.map(
         \method : Method =>
           <Documentation.Entity
+            description={method.description}
             arguments={method.arguments}
             source={method.source}
             name={method.name}
@@ -36,6 +48,7 @@ record Documentation.Entity.State {
 }
 
 component Documentation.Entity {
+  property description : Maybe(String) = Maybe.nothing()
   property arguments : Array(Argument) = []
   property source : String = ""
   property name : String = ""
@@ -75,20 +88,30 @@ component Documentation.Entity {
   }
 
   style code {
+    text-transform: uppercase;
     align-items: center;
+    margin-top: 10px;
+    font-size: 10px;
+    cursor: pointer;
     display: flex;
+    opacity: 0.33;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   style arguments {
-    margin-left: 10px;
     display: flex;
 
     &:before {
       content: "(";
+      opacity: 0.75;
     }
 
     &:after {
       content: ")";
+      opacity: 0.75;
     }
   }
 
@@ -98,20 +121,54 @@ component Documentation.Entity {
     }
   }
 
+  style code-icon {
+    transform: {codeTransform};
+    position: relative;
+    fill: currentColor;
+    margin-right: 5px;
+    top: -1px;
+  }
+
+  style pre {
+    font-family: Source Code Pro;
+    border: 1px solid #EEE;
+    background: #FAFAFA;
+    padding: 10px;
+
+    margin: 0;
+    margin-top: 10px;
+  }
+
+  style description {
+    padding: 20px 0;
+    padding-left: 20px;
+    opacity: 0.8;
+  }
+
+  get codeTransform : String {
+    if (state.sourceShown) {
+      "rotate(90deg)"
+    } else {
+      ""
+    }
+  }
+
+  get showSourceText : String {
+    if (state.sourceShown) {
+      "Hide source "
+    } else {
+      "Show source"
+    }
+  }
+
   get code : Html {
-    <svg
+    <svg::code-icon
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="9"
+      height="9"
       viewBox="0 0 24 24">
 
-      <path
-        d={
-          "M24 10.935v2.131l-8 3.947v-2.23l5.64-2.783-5.64-2.79v-2." \
-          "223l8 3.948zm-16 3.848l-5.64-2.783 5.64-2.79v-2.223l-8 3" \
-          ".948v2.131l8 3.947v-2.23zm7.047-10.783h-2.078l-4.011 16h" \
-          "2.073l4.016-16z"
-        }/>
+      <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/>
 
     </svg>
   }
@@ -136,17 +193,27 @@ component Documentation.Entity {
         </div>
       </div>
 
+      <{
+        if (Maybe.isJust(description)) {
+          <div::description>
+            <{ <Markdown content={Maybe.withDefault("", description)}/> }>
+          </div>
+        } else {
+          Html.empty()
+        }
+      }>
+
       <div::code onClick={toggleSource}>
         <{ code }>
 
         <div>
-          <{ "Show source " }>
+          <{ showSourceText }>
         </div>
       </div>
 
       <{
         if (state.sourceShown) {
-          <pre>
+          <pre::pre>
             <{ source }>
           </pre>
         } else {
@@ -164,7 +231,7 @@ component Documentation.Entity {
               <{ argument.name }>
             </strong>
 
-            <span>
+            <span::type>
               <{ argument.type }>
             </span>
           </div>)

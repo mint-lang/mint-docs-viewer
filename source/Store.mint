@@ -62,13 +62,28 @@ store Documentation.Store {
           \item : Module, map : Map(String, Array(Method)) => Map.set(item.name, item.functions, map),
           modules))
 
+    descriptions =
+      modules
+      |> Array.Extra.reduce(
+        Map.empty(),
+        \item : Module, map : Map(String, String) =>
+          Map.set(
+            item.name,
+            Maybe.withDefault("", item.description),
+            map))
+
     functions =
       Map.get(name, functionsMap)
       |> Maybe.withDefault([])
 
+    description =
+      Map.get(name, descriptions)
+      |> Maybe.withDefault("")
+
     selected =
       {
         type = Documentation.Type::Component,
+        description = description,
         functions = functions,
         properties = [],
         name = name

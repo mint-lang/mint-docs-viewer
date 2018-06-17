@@ -43,10 +43,18 @@ component Documentation.Sidebar.Item {
     }
   }
 
+  get char : String {
+    case (type) {
+      Documentation.Type::Component => "C"
+      Documentation.Type::Module => "M"
+      Documentation.Type::Store => "S"
+    }
+  }
+
   fun render : Html {
     <div::base onClick={\event : Html.Event => select(name)}>
       <div::badge>
-        <{ "C" }>
+        <{ char }>
       </div>
 
       <span::span>
