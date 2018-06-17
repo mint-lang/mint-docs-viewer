@@ -11,7 +11,15 @@ record Component {
 }
 
 record Method {
-  name : String
+  arguments : Array(Argument),
+  source : String,
+  name : String,
+  type : String
+}
+
+record Argument {
+  name : String,
+  type : String
 }
 
 record Module {
@@ -36,4 +44,15 @@ enum Documentation.Type {
   Component,
   Module,
   Store
+}
+
+module Content {
+  fun empty : Content {
+    {
+      properties = [],
+      type = Documentation.Type::Component,
+      functions = [],
+      name = ""
+    }
+  }
 }

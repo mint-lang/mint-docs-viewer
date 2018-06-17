@@ -10,6 +10,7 @@ component Main {
     flex-direction: column;
     min-height: 100vh;
     display: flex;
+    color: #333;
   }
 
   style content {

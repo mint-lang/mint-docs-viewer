@@ -1,15 +1,10 @@
 store Documentation.Store {
-  property tab : Documentation.Type = Documentation.Type::Component
+  property tab : Documentation.Type = Documentation.Type::Module
   property components : Array(Component) = []
   property stores : Array(Component) = []
   property modules : Array(Module) = []
 
-  property selected : Content = {
-    properties = [],
-    type = Documentation.Type::Component,
-    functions = [],
-    name = ""
-  }
+  property selected : Content = Content.empty()
 
   property loaded : Bool = false
 
@@ -36,6 +31,8 @@ store Documentation.Store {
             modules = object.modules,
             stores = object.stores
           }
+
+        select("Array")
       } catch Http.ErrorResponse => error {
         void
       } catch String => error {
@@ -53,16 +50,16 @@ store Documentation.Store {
       components
       |> Array.Extra.reduce(
         Map.empty(),
-        \item : Component, map : Map(String, Method) => Map.set(item.name, item.functions, map))
+        \item : Component, map : Map(String, Array(Method)) => Map.set(item.name, item.functions, map))
       |> Map.merge(
         Array.Extra.reduce(
           Map.empty(),
-          \item : Component, map : Map(String, Method) => Map.set(item.name, item.functions, map),
+          \item : Component, map : Map(String, Array(Method)) => Map.set(item.name, item.functions, map),
           stores))
       |> Map.merge(
         Array.Extra.reduce(
           Map.empty(),
-          \item : Module, map : Map(String, Method) => Map.set(item.name, item.functions, map),
+          \item : Module, map : Map(String, Array(Method)) => Map.set(item.name, item.functions, map),
           modules))
 
     functions =
@@ -79,13 +76,26 @@ store Documentation.Store {
   }
 
   fun selectTab (tab : Documentation.Type) : Void {
-    next { state | tab = tab }
+    if (state.tab == tab) {
+      void
+    } else {
+      next
+        { state |
+          tab = tab,
+          selected = Content.empty()
+        }
+    }
   }
 }
 
 module Array.Extra {
-  fun reduce (memo : e, accumulator : Function(g, e, e), array : Array(g)) : e {
-    `array.reduce(accumulator, memo)`
+  fun reduce (memo : memo, accumulator : Function(item, memo, memo), array : Array(item)) : memo {
+    `
+    (() => {
+      array.reduce((acc, item) => accumulator(item, acc), memo)
+      return memo
+    })()
+    `
   }
 }
 
@@ -118,7 +128,7 @@ module Map {
   fun merge (map1 : Map(x, z), map2 : Map(x, z)) : Map(x, z) {
     `
     (() => {
-      map = new Map()
+      const map = new Map()
 
       for (let item of map1) {
         map.set(item[0], item[1])
