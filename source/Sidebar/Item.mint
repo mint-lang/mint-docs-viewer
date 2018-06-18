@@ -1,5 +1,5 @@
 component Documentation.Sidebar.Item {
-  connect Documentation.Store exposing { select }
+  connect Documentation.Store exposing { tabName, entityColor }
 
   property type : Documentation.Type = Documentation.Type::Component
   property name : String = ""
@@ -22,7 +22,7 @@ component Documentation.Sidebar.Item {
   }
 
   style badge {
-    background-color: {badgeColor};
+    background-color: {entityColor};
     justify-content: center;
     display: inline-flex;
     align-items: center;
@@ -35,14 +35,6 @@ component Documentation.Sidebar.Item {
     color: #FFF;
   }
 
-  get badgeColor : String {
-    case (type) {
-      Documentation.Type::Component => "#369e58"
-      Documentation.Type::Module => "#be08d0"
-      Documentation.Type::Store => "#d02e2e"
-    }
-  }
-
   get char : String {
     case (type) {
       Documentation.Type::Component => "C"
@@ -52,7 +44,7 @@ component Documentation.Sidebar.Item {
   }
 
   fun render : Html {
-    <div::base onClick={\event : Html.Event => select(name)}>
+    <a::base href={"/" + tabName + "/" + name}>
       <div::badge>
         <{ char }>
       </div>
@@ -60,6 +52,6 @@ component Documentation.Sidebar.Item {
       <span::span>
         <{ name }>
       </span>
-    </div>
+    </a>
   }
 }

@@ -1,13 +1,15 @@
 component Documentation.Tab {
-  connect Documentation.Store exposing { selectTab, tab }
+  connect Documentation.Store exposing { nameOf, selectTab, tab, entityColor }
 
   property of : Documentation.Type = Documentation.Type::Component
 
   style base {
     background: {background};
+    text-decoration: none;
     align-items: center;
     padding: 0 20px;
     cursor: pointer;
+    color: inherit;
     display: flex;
     height: 50px;
 
@@ -30,7 +32,7 @@ component Documentation.Tab {
 
   get background : String {
     if (active) {
-      "#29894E"
+      entityColor
     } else {
       "transparent"
     }
@@ -38,7 +40,8 @@ component Documentation.Tab {
 
   get hoverBackground : String {
     if (active) {
-      "#29894E"
+      "linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255," \
+      " 255, 0.1)), " + background
     } else {
       "#444"
     }
@@ -149,19 +152,21 @@ component Documentation.Tab {
   }
 
   fun render : Html {
-    <div::base onClick={\event : Html.Event => selectTab(of)}>
+    <a::base href={"/" + nameOf(of)}>
       <{ icon }>
 
       <span::span>
         <{ title }>
       </span>
-    </div>
+    </a>
   }
 }
 
 component Documentation.Tabs {
+  connect Documentation.Store exposing { entityColor }
+
   style base {
-    border-bottom: 5px solid #29894E;
+    border-bottom: 5px solid {entityColor};
     font-weight: bold;
     background: #333;
     display: flex;

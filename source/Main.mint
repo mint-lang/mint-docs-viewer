@@ -33,3 +33,36 @@ component Main {
     </div>
   }
 }
+
+routes {
+  /:tab/:selected (tab : String, selected : String) {
+    do {
+      tabId =
+        case (tab) {
+          "component" => Documentation.Type::Component
+          "module" => Documentation.Type::Module
+          "store" => Documentation.Type::Store
+          => Documentation.Type::Component
+        }
+
+      Documentation.Store.load()
+      Documentation.Store.selectTab(tabId)
+      Documentation.Store.select(selected)
+    }
+  }
+
+  /:tab (tab : String) {
+    do {
+      tabId =
+        case (tab) {
+          "component" => Documentation.Type::Component
+          "module" => Documentation.Type::Module
+          "store" => Documentation.Type::Store
+          => Documentation.Type::Component
+        }
+
+      Documentation.Store.load()
+      Documentation.Store.selectTab(tabId)
+    }
+  }
+}

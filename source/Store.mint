@@ -8,6 +8,26 @@ store Documentation.Store {
 
   property loaded : Bool = false
 
+  get entityColor : String {
+    case (tab) {
+      Documentation.Type::Component => "#369e58"
+      Documentation.Type::Module => "#be08d0"
+      Documentation.Type::Store => "#d02e2e"
+    }
+  }
+
+  get tabName : String {
+    nameOf(tab)
+  }
+
+  fun nameOf (tab : Documentation.Type) : String {
+    case (tab) {
+      Documentation.Type::Component => "component"
+      Documentation.Type::Module => "module"
+      Documentation.Type::Store => "store"
+    }
+  }
+
   fun load : Void {
     if (loaded) {
       void
@@ -31,8 +51,6 @@ store Documentation.Store {
             modules = object.modules,
             stores = object.stores
           }
-
-        select("Array")
       } catch Http.ErrorResponse => error {
         void
       } catch String => error {
@@ -94,12 +112,32 @@ store Documentation.Store {
     if (state.tab == tab) {
       void
     } else {
-      next
-        { state |
-          tab = tab,
-          selected = Content.empty()
-        }
+      do {
+        next { state | tab = tab }
+        select(first)
+      }
     }
+  } where {
+    first =
+      case (tab) {
+        Documentation.Type::Component =>
+          components
+          |> Array.first()
+          |> Maybe.map(\item : Component => item.name)
+          |> Maybe.withDefault("")
+
+        Documentation.Type::Module =>
+          modules
+          |> Array.first()
+          |> Maybe.map(\item : Module => item.name)
+          |> Maybe.withDefault("")
+
+        Documentation.Type::Store =>
+          stores
+          |> Array.first()
+          |> Maybe.map(\item : Component => item.name)
+          |> Maybe.withDefault("")
+      }
   }
 }
 
