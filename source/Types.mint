@@ -6,6 +6,7 @@ record Property {
 
 record Component {
   properties : Array(Property),
+  description : Maybe(String),
   functions : Array(Method),
   name : String
 }

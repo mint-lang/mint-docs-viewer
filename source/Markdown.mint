@@ -14,7 +14,24 @@ component Markdown {
     `
   }
 
+  style base {
+    & > *:first-child {
+      margin-top: 0;
+    }
+
+    & > *:last-child {
+      margin-bottom: 0;
+    }
+
+    & pre {
+      font-family: Source Code Pro;
+      border: 1px dashed #EEE;
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+
   fun render : Html {
-    <div dangerouslySetInnerHTML={`{__html: this.html}`}/>
+    <div::base dangerouslySetInnerHTML={`{__html: this.html}`}/>
   }
 }

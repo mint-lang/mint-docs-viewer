@@ -13,7 +13,7 @@ component Documentation.Content {
   }
 
   style description {
-
+    margin-top: 20px;
   }
 
   fun render : Html {
@@ -80,7 +80,7 @@ component Documentation.Entity {
   }
 
   style base {
-    padding: 20px 0;
+    padding: 15px 0;
 
     & + * {
       border-top: 1px dashed #DDD;
@@ -133,6 +133,7 @@ component Documentation.Entity {
     font-family: Source Code Pro;
     border: 1px solid #EEE;
     background: #FAFAFA;
+    font-size: 14px;
     padding: 10px;
 
     margin: 0;

@@ -1,10 +1,6 @@
 component Main {
   connect Documentation.Store exposing { load, components, stores, selected }
 
-  fun componentDidMount : Void {
-    load()
-  }
-
   style base {
     font-family: sans-serif;
     flex-direction: column;
@@ -63,6 +59,13 @@ routes {
 
       Documentation.Store.load()
       Documentation.Store.selectTab(tabId)
+    }
+  }
+
+  * {
+    do {
+      Documentation.Store.load()
+      Documentation.Store.selectTab(Documentation.Type::Component)
     }
   }
 }

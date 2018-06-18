@@ -1,5 +1,5 @@
 store Documentation.Store {
-  property tab : Documentation.Type = Documentation.Type::Module
+  property tab : Documentation.Type = Documentation.Type::Component
   property components : Array(Component) = []
   property stores : Array(Component) = []
   property modules : Array(Module) = []
@@ -89,6 +89,15 @@ store Documentation.Store {
             item.name,
             Maybe.withDefault("", item.description),
             map))
+      |> Map.merge(
+        Array.Extra.reduce(
+          Map.empty(),
+          \item : Component, map : Map(String, String) =>
+            Map.set(
+              item.name,
+              Maybe.withDefault("", item.description),
+              map),
+          components))
 
     functions =
       Map.get(name, functionsMap)
@@ -109,13 +118,14 @@ store Documentation.Store {
   }
 
   fun selectTab (tab : Documentation.Type) : Void {
-    if (state.tab == tab) {
-      void
-    } else {
-      do {
+    do {
+      if (state.tab == tab) {
+        void
+      } else {
         next { state | tab = tab }
-        select(first)
       }
+
+      select(first)
     }
   } where {
     first =
