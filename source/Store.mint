@@ -56,7 +56,9 @@ store Documentation.Store {
       } catch String => error {
         void
       } catch Object.Error => error {
-        void
+        do {
+          Debug.log(Object.Error.toString(error))
+        }
       }
     }
   }
@@ -79,6 +81,12 @@ store Documentation.Store {
           Map.empty(),
           \item : Module, map : Map(String, Array(Method)) => Map.set(item.name, item.functions, map),
           modules))
+
+    properties =
+      components
+      |> Array.find(\item : Component => item.name == name)
+      |> Maybe.map(\item : Component => item.properties)
+      |> Maybe.withDefault([])
 
     descriptions =
       modules
@@ -111,8 +119,8 @@ store Documentation.Store {
       {
         type = Documentation.Type::Component,
         description = description,
+        properties = properties,
         functions = functions,
-        properties = [],
         name = name
       }
   }
