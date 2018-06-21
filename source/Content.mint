@@ -14,6 +14,7 @@ component Documentation.Content {
 
   style description {
     margin-top: 20px;
+    opacity: 0.8;
   }
 
   fun render : Html {
@@ -31,7 +32,6 @@ component Documentation.Content {
   } where {
     methods =
       selected.functions
-      |> Array.sortBy(\method : Method => method.name)
       |> Array.map(
         \method : Method =>
           <Documentation.Entity
