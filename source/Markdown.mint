@@ -23,9 +23,18 @@ component Markdown {
       margin-bottom: 0;
     }
 
+    & p > code {
+      font-family: Source Code Pro;
+      border: 1px dashed #DDD;
+      background: #FAFAFA;
+      font-size: 14px;
+      padding: 5px;
+    }
+
     & pre {
       font-family: Source Code Pro;
-      border: 1px dashed #EEE;
+      border: 1px dashed #DDD;
+      background: #FAFAFA;
       font-size: 14px;
       padding: 10px;
     }
