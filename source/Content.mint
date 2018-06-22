@@ -1,3 +1,29 @@
+component If {
+  property children : Array(Html) = []
+  property condition : Bool = true
+
+  fun render : Array(Html) {
+    if (condition) {
+      children
+    } else {
+      []
+    }
+  }
+}
+
+component Unless {
+  property children : Array(Html) = []
+  property condition : Bool = true
+
+  fun render : Array(Html) {
+    if (!condition) {
+      children
+    } else {
+      []
+    }
+  }
+}
+
 component Documentation.Content {
   connect Documentation.Store exposing { selected }
 
@@ -17,6 +43,16 @@ component Documentation.Content {
     opacity: 0.8;
   }
 
+  style section {
+    border-bottom: 1px solid #EEE;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    font-weight: 600;
+    margin-top: 40px;
+    font-size: 14px;
+    opacity: 0.6;
+  }
+
   fun render : Html {
     <div::base>
       <div::title>
@@ -27,9 +63,37 @@ component Documentation.Content {
         <Markdown content={selected.description}/>
       </div>
 
-      <{ methods }>
+      <Unless condition={Array.isEmpty(properties)}>
+        <div::section>
+          <{ "Properties" }>
+        </div>
+
+        <div>
+          <{ properties }>
+        </div>
+      </Unless>
+
+      <Unless condition={Array.isEmpty(methods)}>
+        <div::section>
+          <{ "Functions" }>
+        </div>
+
+        <div>
+          <{ methods }>
+        </div>
+      </Unless>
     </div>
   } where {
+    properties =
+      selected.properties
+      |> Array.sortBy(\property : Property => property.name)
+      |> Array.map(
+        \property : Property =>
+          <Documentation.Entity
+            defaultValue={property.defaultValue}
+            name={property.name}
+            type={property.type}/>)
+
     methods =
       selected.functions
       |> Array.map(
@@ -50,6 +114,7 @@ record Documentation.Entity.State {
 component Documentation.Entity {
   property description : Maybe(String) = Maybe.nothing()
   property arguments : Array(Argument) = []
+  property defaultValue : String = ""
   property source : String = ""
   property name : String = ""
   property type : String = ""
@@ -58,6 +123,7 @@ component Documentation.Entity {
 
   style definition {
     font-family: Source Code Pro;
+    align-items: center;
     font-size: 18px;
     display: flex;
   }
@@ -146,6 +212,28 @@ component Documentation.Entity {
     opacity: 0.8;
   }
 
+  style default {
+    align-items: center;
+    display: flex;
+
+    &:before {
+      font-weight: 300;
+      margin: 0 5px;
+      content: "=";
+      color: #999;
+    }
+
+    & pre {
+      font-family: Source Code Pro;
+      border: 1px solid #EEE;
+      background: #FAFAFA;
+      font-size: 14px;
+      padding: 5px;
+      color: #444;
+      margin: 0;
+    }
+  }
+
   get codeTransform : String {
     if (state.sourceShown) {
       "rotate(90deg)"
@@ -185,13 +273,31 @@ component Documentation.Entity {
           <{ name }>
         </div>
 
-        <div::arguments>
-          <{ argumentItems }>
-        </div>
+        <{
+          if (Array.isEmpty(arguments)) {
+            Html.empty()
+          } else {
+            <div::arguments>
+              <{ argumentItems }>
+            </div>
+          }
+        }>
 
         <div::type>
           <{ type }>
         </div>
+
+        <{
+          if (String.isEmpty(defaultValue)) {
+            Html.empty()
+          } else {
+            <div::default>
+              <pre>
+                <{ defaultValue }>
+              </pre>
+            </div>
+          }
+        }>
       </div>
 
       <{
@@ -204,13 +310,19 @@ component Documentation.Entity {
         }
       }>
 
-      <div::code onClick={toggleSource}>
-        <{ code }>
+      <{
+        if (String.isEmpty(source)) {
+          Html.empty()
+        } else {
+          <div::code onClick={toggleSource}>
+            <{ code }>
 
-        <div>
-          <{ showSourceText }>
-        </div>
-      </div>
+            <div>
+              <{ showSourceText }>
+            </div>
+          </div>
+        }
+      }>
 
       <{
         if (state.sourceShown) {
