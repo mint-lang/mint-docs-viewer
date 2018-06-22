@@ -1,5 +1,6 @@
 record Property {
   defaultValue : String from "default",
+  description : Maybe(String),
   name : String,
   type : String
 }

@@ -91,6 +91,7 @@ component Documentation.Content {
         \property : Property =>
           <Documentation.Entity
             defaultValue={property.defaultValue}
+            description={property.description}
             name={property.name}
             type={property.type}/>)
 
