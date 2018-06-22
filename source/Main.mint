@@ -49,6 +49,8 @@ routes {
 
   /:tab (tab : String) {
     do {
+      Documentation.Store.load()
+
       tabId =
         case (tab) {
           "component" => Documentation.Type::Component
@@ -57,8 +59,20 @@ routes {
           => Documentation.Type::Component
         }
 
-      Documentation.Store.load()
-      Documentation.Store.selectTab(tabId)
+      empty =
+        case (tabId) {
+          Documentation.Type::Component => Array.isEmpty(Documentation.Store.components)
+          Documentation.Type::Module => Array.isEmpty(Documentation.Store.modules)
+          Documentation.Type::Store => Array.isEmpty(Documentation.Store.stores)
+        }
+
+      if (empty) {
+        Window.navigate("/")
+      } else {
+        do {
+          Documentation.Store.selectTab(tabId)
+        }
+      }
     }
   }
 

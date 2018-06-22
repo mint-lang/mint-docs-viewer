@@ -11,6 +11,19 @@ component If {
   }
 }
 
+component Unless {
+  property children : Array(Html) = []
+  property condition : Bool = true
+
+  fun render : Array(Html) {
+    if (!condition) {
+      children
+    } else {
+      []
+    }
+  }
+}
+
 component Documentation.Content {
   connect Documentation.Store exposing { selected }
 
@@ -31,9 +44,12 @@ component Documentation.Content {
 
   style section {
     border-bottom: 1px solid #EEE;
+    text-transform: uppercase;
     padding-bottom: 10px;
-    margin-top: 20px;
-    font-size: 20px;
+    font-weight: 600;
+    margin-top: 40px;
+    font-size: 14px;
+    opacity: 0.6;
   }
 
   fun render : Html {
@@ -46,7 +62,7 @@ component Documentation.Content {
         <Markdown content={selected.description}/>
       </div>
 
-      <If condition={!Array.isEmpty(properties)}>
+      <Unless condition={Array.isEmpty(properties)}>
         <div::section>
           <{ "Properties" }>
         </div>
@@ -54,9 +70,9 @@ component Documentation.Content {
         <div>
           <{ properties }>
         </div>
-      </If>
+      </Unless>
 
-      <If condition={!Array.isEmpty(methods)}>
+      <Unless condition={Array.isEmpty(methods)}>
         <div::section>
           <{ "Functions" }>
         </div>
@@ -64,7 +80,7 @@ component Documentation.Content {
         <div>
           <{ methods }>
         </div>
-      </If>
+      </Unless>
     </div>
   } where {
     properties =
