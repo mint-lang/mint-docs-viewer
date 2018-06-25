@@ -1,29 +1,10 @@
-component If {
-  property children : Array(Html) = []
-  property condition : Bool = true
+component RawHTML {
+  property content : String = ""
 
-  fun render : Array(Html) {
-    if (condition) {
-      children
-    } else {
-      []
-    }
+  fun render : Html {
+    <div dangerouslySetInnerHTML={`{__html: this.content}`}/>
   }
 }
-
-component Unless {
-  property children : Array(Html) = []
-  property condition : Bool = true
-
-  fun render : Array(Html) {
-    if (!condition) {
-      children
-    } else {
-      []
-    }
-  }
-}
-
 component Documentation.Content {
   connect Documentation.Store exposing { selected }
 
@@ -59,7 +40,7 @@ component Documentation.Content {
       </div>
 
       <div::description>
-        <Markdown content={selected.description}/>
+        <RawHTML content={selected.description}/>
       </div>
 
       <Unless condition={Array.isEmpty(properties)}>
@@ -303,7 +284,7 @@ component Documentation.Entity {
       <{
         if (Maybe.isJust(description)) {
           <div::description>
-            <{ <Markdown content={Maybe.withDefault("", description)}/> }>
+            <{ <RawHTML content={Maybe.withDefault("", description)}/> }>
           </div>
         } else {
           Html.empty()

@@ -45,8 +45,8 @@ record Documentation {
 }
 
 enum Documentation.Type {
-  Component,
-  Module,
+  Component
+  Module
   Store
 }
 
