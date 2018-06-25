@@ -54,6 +54,16 @@ component Documentation.Content {
         </div>
       </Unless>
 
+      <Unless condition={Array.isEmpty(computedProperties)}>
+        <div::section>
+          <{ "Computed Properties" }>
+        </div>
+
+        <div>
+          <{ computedProperties }>
+        </div>
+      </Unless>
+
       <Unless condition={Array.isEmpty(methods)}>
         <div::section>
           <{ "Functions" }>
@@ -65,6 +75,16 @@ component Documentation.Content {
       </Unless>
     </div>
   } where {
+    computedProperties =
+      selected.computedProperties
+      |> Array.map(
+        \method : ComputedProperty =>
+          <Documentation.Entity
+            description={method.description}
+            source={method.source}
+            name={method.name}
+            type={method.type}/>)
+
     properties =
       selected.properties
       |> Array.sortBy(\property : Property => property.name)

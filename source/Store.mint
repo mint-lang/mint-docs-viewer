@@ -88,6 +88,12 @@ store Documentation.Store {
       |> Maybe.map(\item : Component => item.properties)
       |> Maybe.withDefault([])
 
+    computedProperties =
+      components
+      |> Array.find(\item : Component => item.name == name)
+      |> Maybe.map(\item : Component => item.computedProperties)
+      |> Maybe.withDefault([])
+
     descriptions =
       modules
       |> Array.Extra.reduce(
@@ -117,6 +123,7 @@ store Documentation.Store {
 
     selected =
       {
+        computedProperties = computedProperties,
         type = Documentation.Type::Component,
         description = description,
         properties = properties,

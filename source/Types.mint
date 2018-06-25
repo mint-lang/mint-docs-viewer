@@ -5,7 +5,15 @@ record Property {
   type : String
 }
 
+record ComputedProperty {
+  description : Maybe(String),
+  source : String,
+  name : String,
+  type : String
+}
+
 record Component {
+  computedProperties : Array(ComputedProperty) from "computed-properties",
   properties : Array(Property),
   description : Maybe(String),
   functions : Array(Method),
@@ -32,6 +40,7 @@ record Module {
 }
 
 record Content {
+  computedProperties : Array(ComputedProperty),
   properties : Array(Property),
   type : Documentation.Type,
   functions : Array(Method),
@@ -54,6 +63,7 @@ enum Documentation.Type {
 module Content {
   fun empty : Content {
     {
+      computedProperties = [],
       properties = [],
       type = Documentation.Type::Component,
       functions = [],
