@@ -1,10 +1,21 @@
 component RawHTML {
   property content : String = ""
 
+  style base {
+    & *:first-child {
+      margin-top: 0;
+    }
+
+    & *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   fun render : Html {
-    <div dangerouslySetInnerHTML={`{__html: this.content}`}/>
+    <div::base dangerouslySetInnerHTML={`{__html: this.content}`}/>
   }
 }
+
 component Documentation.Content {
   connect Documentation.Store exposing { selected }
 
