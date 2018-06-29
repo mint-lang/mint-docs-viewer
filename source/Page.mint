@@ -68,6 +68,16 @@ component Page {
         </div>
       </If>
 
+      <Unless condition={Array.isEmpty(uses)}>
+        <div::section>
+          <{ "Using Providers" }>
+        </div>
+
+        <div>
+          <{ uses }>
+        </div>
+      </Unless>
+
       <Unless condition={Array.isEmpty(fields)}>
         <div::section>
           <{ "Fields" }>
@@ -182,5 +192,14 @@ component Page {
     options =
       selected.options
       |> Array.map(\item : String => <Option name={item}/>)
+
+    uses =
+      selected.uses
+      |> Array.map(
+        \item : Use =>
+          <Use
+            condition={item.condition}
+            provider={item.provider}
+            data={item.data}/>)
   }
 }

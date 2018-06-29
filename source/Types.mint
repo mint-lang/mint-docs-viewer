@@ -33,8 +33,16 @@ record Component {
   description : Maybe(String),
   connects : Array(Connect),
   functions : Array(Method),
+  providers : Array(Use),
   state : Maybe(State),
   name : String
+}
+
+/* Represents a provider use. */
+record Use {
+  condition : Maybe(String),
+  provider : String,
+  data : String
 }
 
 /* Represents a store. */
@@ -86,6 +94,7 @@ record Content {
   options : Array(String),
   description : String,
   state : Maybe(State),
+  uses : Array(Use),
   name : String
 }
 

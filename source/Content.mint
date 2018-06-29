@@ -8,6 +8,7 @@ module Content {
       properties = item.properties,
       functions = item.functions,
       connects = item.connects,
+      uses = item.providers,
       state = item.state,
       name = item.name,
       options = [],
@@ -26,7 +27,8 @@ module Content {
       properties = [],
       functions = [],
       connects = [],
-      options = []
+      options = [],
+      uses = []
     }
   }
 
@@ -41,7 +43,8 @@ module Content {
       properties = [],
       functions = [],
       connects = [],
-      fields = []
+      fields = [],
+      uses = []
     }
   }
 
@@ -56,7 +59,8 @@ module Content {
       properties = [],
       connects = [],
       options = [],
-      fields = []
+      fields = [],
+      uses = []
     }
   }
 
@@ -71,7 +75,8 @@ module Content {
       name = item.name,
       connects = [],
       options = [],
-      fields = []
+      fields = [],
+      uses = []
     }
   }
 
@@ -86,7 +91,8 @@ module Content {
       properties = [],
       connects = [],
       options = [],
-      fields = []
+      fields = [],
+      uses = []
     }
   }
 
@@ -101,6 +107,7 @@ module Content {
       connects = [],
       options = [],
       fields = [],
+      uses = [],
       name = ""
     }
   }
