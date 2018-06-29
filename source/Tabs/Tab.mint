@@ -1,6 +1,6 @@
 /* A component for the top-level entity tab. */
 component Tab {
-  connect Application exposing { selectTab, tab }
+  connect Application exposing { tab }
 
   /* The type for the tab. */
   property of : Type = Type::Component

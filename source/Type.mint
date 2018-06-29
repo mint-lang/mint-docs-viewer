@@ -1,12 +1,12 @@
 module Type {
-  fun fromString (name : String) : Type {
+  fun fromString (name : String) : Result(String, Type) {
     case (name) {
-      "component" => Type::Component
-      "provider" => Type::Provider
-      "record" => Type::Record
-      "module" => Type::Module
-      "store" => Type::Store
-      => Type::Component
+      "component" => Result.ok(Type::Component)
+      "provider" => Result.ok(Type::Provider)
+      "record" => Result.ok(Type::Record)
+      "module" => Result.ok(Type::Module)
+      "store" => Result.ok(Type::Store)
+      => Result.error("Cannot find tab!")
     }
   }
 

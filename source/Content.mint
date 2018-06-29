@@ -8,6 +8,7 @@ module Content {
       properties = item.properties,
       functions = item.functions,
       connects = item.connects,
+      state = item.state,
       name = item.name,
       fields = []
     }
@@ -17,6 +18,7 @@ module Content {
   fun fromRecord (item : Record) : Content {
     {
       description = Maybe.withDefault("", item.description),
+      state = Maybe.nothing(),
       computedProperties = [],
       fields = item.fields,
       name = item.name,
@@ -32,6 +34,7 @@ module Content {
       description = Maybe.withDefault("", item.description),
       functions = item.functions,
       computedProperties = [],
+      state = Maybe.nothing(),
       name = item.name,
       properties = [],
       connects = [],
@@ -46,6 +49,7 @@ module Content {
       computedProperties = item.computedProperties,
       properties = item.properties,
       functions = item.functions,
+      state = Maybe.nothing(),
       name = item.name,
       connects = [],
       fields = []
@@ -57,6 +61,7 @@ module Content {
     {
       description = Maybe.withDefault("", item.description),
       functions = item.functions,
+      state = Maybe.nothing(),
       computedProperties = [],
       name = item.name,
       properties = [],
@@ -68,6 +73,7 @@ module Content {
   /* Creates a new empty `Content`. */
   fun empty : Content {
     {
+      state = Maybe.nothing(),
       computedProperties = [],
       description = "",
       properties = [],

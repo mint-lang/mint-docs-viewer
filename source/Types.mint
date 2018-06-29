@@ -83,6 +83,7 @@ record Content {
   connects : Array(Connect),
   functions : Array(Method),
   description : String,
+  state : Maybe(State),
   name : String
 }
 

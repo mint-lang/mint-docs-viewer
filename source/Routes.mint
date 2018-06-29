@@ -1,42 +1,13 @@
 routes {
   /:tab/:selected (tab : String, selected : String) {
-    do {
-      Application.load()
-      Application.selectTab(Type.fromString(tab))
-      Application.select(selected)
-    }
+    Application.route(tab, Maybe.just(selected))
   }
 
   /:tab (tab : String) {
-    do {
-      Application.load()
-
-      tabId =
-        Type.fromString(tab)
-
-      empty =
-        case (tabId) {
-          Type::Component => Array.isEmpty(Application.components)
-          Type::Provider => Array.isEmpty(Application.providers)
-          Type::Record => Array.isEmpty(Application.records)
-          Type::Module => Array.isEmpty(Application.modules)
-          Type::Store => Array.isEmpty(Application.stores)
-        }
-
-      if (empty) {
-        Window.navigate("/")
-      } else {
-        do {
-          Application.selectTab(tabId)
-        }
-      }
-    }
+    Application.route(tab, Maybe.nothing())
   }
 
   * {
-    do {
-      Application.load()
-      Application.selectTab(Type::Component)
-    }
+    Application.route("component", Maybe.nothing())
   }
 }

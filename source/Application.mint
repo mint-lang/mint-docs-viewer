@@ -60,69 +60,69 @@ store Application {
     }
   }
 
-  /* Selects an entity with the given name. */
-  fun select (name : String) : Void {
-    next { state | selected = selected }
-  } where {
-    items =
-      case (tab) {
-        Type::Component => Array.map(Content.fromComponent, components)
-        Type::Provider => Array.map(Content.fromProvider, providers)
-        Type::Record => Array.map(Content.fromRecord, records)
-        Type::Module => Array.map(Content.fromModule, modules)
-        Type::Store => Array.map(Content.fromStore, stores)
-      }
+  fun route (tabName : String, maybeName : Maybe(String)) : Void {
+    do {
+      Application.load()
 
-    selected =
-      items
-      |> Array.find(\item : Content => item.name == name)
-      |> Maybe.withDefault(Content.empty())
+      tab =
+        Type.fromString(tabName)
+
+      items =
+        case (tab) {
+          Type::Component => Array.map(Content.fromComponent, components)
+          Type::Provider => Array.map(Content.fromProvider, providers)
+          Type::Record => Array.map(Content.fromRecord, records)
+          Type::Module => Array.map(Content.fromModule, modules)
+          Type::Store => Array.map(Content.fromStore, stores)
+        }
+
+      do {
+        selected =
+          maybeName
+          |> Maybe.map(
+            \name : String => Array.find(\item : Content => item.name == name, items))
+          |> Maybe.Extra.flatten()
+          |> Maybe.toResult("Could not find entity!")
+
+        next
+          { state |
+            selected = selected,
+            tab = tab
+          }
+      } catch String => error {
+        do {
+          first =
+            Array.first(items)
+            |> Maybe.toResult("Could not find first!")
+
+          Window.navigate("/" + Type.path(tab) + "/" + first.name)
+        } catch String => error {
+          Window.navigate("/")
+        }
+      }
+    } catch String => error {
+      Window.navigate("/")
+    }
+  }
+}
+
+module Maybe.Extra {
+  fun flatten (maybe : Maybe(Maybe(a))) : Maybe(a) {
+    `
+    (() => {
+      if (maybe instanceof Just) {
+        return maybe.value
+      } else {
+        return maybe
+      }
+    })()
+    `
   }
 
-  /* Selects the given tab. */
-  fun selectTab (tab : Type) : Void {
-    do {
-      if (state.tab == tab) {
-        void
-      } else {
-        next { state | tab = tab }
-      }
-
-      select(first)
-    }
-  } where {
-    first =
-      case (tab) {
-        Type::Component =>
-          components
-          |> Array.first()
-          |> Maybe.map(\item : Component => item.name)
-          |> Maybe.withDefault("")
-
-        Type::Provider =>
-          providers
-          |> Array.first()
-          |> Maybe.map(\item : Provider => item.name)
-          |> Maybe.withDefault("")
-
-        Type::Record =>
-          records
-          |> Array.first()
-          |> Maybe.map(\item : Record => item.name)
-          |> Maybe.withDefault("")
-
-        Type::Module =>
-          modules
-          |> Array.first()
-          |> Maybe.map(\item : Module => item.name)
-          |> Maybe.withDefault("")
-
-        Type::Store =>
-          stores
-          |> Array.first()
-          |> Maybe.map(\item : Store => item.name)
-          |> Maybe.withDefault("")
-      }
+  fun oneOf (array : Array(Maybe(a))) : Maybe(a) {
+    array
+    |> Array.find(\item : Maybe(a) => Maybe.isJust(item))
+    |> flatten()
   }
 }
 
