@@ -1,11 +1,12 @@
-record Documentation.Source.State {
+record Source.State {
   shown : Bool
 }
 
 /* Component for rendering the source code of entities. */
-component Documentation.Source {
-  state : Documentation.Source.State { shown = false }
+component Source {
+  state : Source.State { shown = false }
 
+  /* The code to render. */
   property code : String = ""
 
   /* The base style. */
@@ -74,20 +75,21 @@ component Documentation.Source {
   }
 
   /* Renders the component. */
-  fun render : Array(Html) {
-    [
+  fun render : Html {
+    <div>
       <div::base onClick={toggle}>
         <{ icon }>
 
         <div>
           <{ text }>
         </div>
-      </div>,
+      </div>
+
       <If condition={state.shown}>
         <div::code>
-          <Documentation.Pre code={code}/>
+          <Pre code={code}/>
         </div>
       </If>
-    ]
+    </div>
   }
 }

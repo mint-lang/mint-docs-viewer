@@ -1,13 +1,26 @@
-component Documentation.Entity {
+/* A component for rendering an entity (function, property, etc..). */
+component Entity {
+  /* The desctiption in raw HTML format, if nothing it will not be rendered. */
   property description : Maybe(String) = Maybe.nothing()
+
+  /* The arguments for a function, if empty they will not be rendered. */
   property arguments : Array(Argument) = []
+
+  /* The default value for a property, if empty it will not be rendered. */
   property defaultValue : String = ""
+
+  /* The source of the entity, if empty it will not be rendered. */
   property source : String = ""
+
+  /* The name of the enity. */
   property name : String = ""
+
+  /* The type signature of the enity. */
   property type : String = ""
 
   style definition {
     font-family: Source Code Pro;
+    white-space: nowrap;
     align-items: center;
     font-size: 18px;
     display: flex;
@@ -76,6 +89,20 @@ component Documentation.Entity {
     }
   }
 
+  /* Renders the given argument. */
+  fun renderArgument (argument : Argument) : Html {
+    <div::argument>
+      <strong>
+        <{ argument.name }>
+      </strong>
+
+      <span::type>
+        <{ argument.type }>
+      </span>
+    </div>
+  }
+
+  /* Renders the component. */
   fun render : Html {
     <div::base>
       <div::definition>
@@ -85,7 +112,7 @@ component Documentation.Entity {
 
         <Unless condition={Array.isEmpty(arguments)}>
           <div::arguments>
-            <{ argumentItems }>
+            <{ Array.map(renderArgument, arguments) }>
           </div>
         </Unless>
 
@@ -95,34 +122,20 @@ component Documentation.Entity {
 
         <Unless condition={String.isEmpty(defaultValue)}>
           <div::default>
-            <Documentation.Pre code={defaultValue}/>
+            <Pre code={defaultValue}/>
           </div>
         </Unless>
       </div>
 
       <If condition={Maybe.isJust(description)}>
         <div::description>
-          <{ <RawHTML content={Maybe.withDefault("", description)}/> }>
+          <RawHtml content={Maybe.withDefault("", description)}/>
         </div>
       </If>
 
       <Unless condition={String.isEmpty(source)}>
-        <Documentation.Source code={source}/>
+        <Source code={source}/>
       </Unless>
     </div>
-  } where {
-    argumentItems =
-      arguments
-      |> Array.map(
-        \argument : Argument =>
-          <div::argument>
-            <strong>
-              <{ argument.name }>
-            </strong>
-
-            <span::type>
-              <{ argument.type }>
-            </span>
-          </div>)
   }
 }

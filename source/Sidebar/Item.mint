@@ -1,8 +1,12 @@
-component Documentation.Sidebar.Item {
-  connect Documentation.Store exposing { tabName, entityColor }
+/* Renders a sidebar item. */
+component Sidebar.Item {
+  connect Application exposing { tabName, entityColor }
 
-  property type : Documentation.Type = Documentation.Type::Component
-  property name : String = ""
+  /* The type of the item. */
+  property type : Type = Type::Component
+
+  /* The text to render. */
+  property text : String = ""
 
   style base {
     text-decoration: none;
@@ -35,22 +39,24 @@ component Documentation.Sidebar.Item {
     color: #FFF;
   }
 
+  /* Returns the character for the label. */
   get char : String {
     case (type) {
-      Documentation.Type::Component => "C"
-      Documentation.Type::Module => "M"
-      Documentation.Type::Store => "S"
+      Type::Component => "C"
+      Type::Module => "M"
+      Type::Store => "S"
     }
   }
 
+  /* Renders the component. */
   fun render : Html {
-    <a::base href={"/" + tabName + "/" + name}>
+    <a::base href={"/" + tabName + "/" + text}>
       <div::badge>
         <{ char }>
       </div>
 
       <span::span>
-        <{ name }>
+        <{ text }>
       </span>
     </a>
   }

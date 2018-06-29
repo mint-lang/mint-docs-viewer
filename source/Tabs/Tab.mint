@@ -1,7 +1,9 @@
-component Documentation.Tab {
-  connect Documentation.Store exposing { nameOf, selectTab, tab, entityColor }
+/* A component for the top-level entity tab. */
+component Tab {
+  connect Application exposing { nameOf, selectTab, tab, entityColor }
 
-  property of : Documentation.Type = Documentation.Type::Component
+  /* The type for the tab. */
+  property of : Type = Type::Component
 
   style base {
     background: {background};
@@ -30,6 +32,7 @@ component Documentation.Tab {
     font-size: 14px;
   }
 
+  /* Returns the background color of the tab. */
   get background : String {
     if (active) {
       entityColor
@@ -38,6 +41,7 @@ component Documentation.Tab {
     }
   }
 
+  /* Returns the hovered background color of the tab. */
   get hoverBackground : String {
     if (active) {
       "linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255," \
@@ -47,13 +51,15 @@ component Documentation.Tab {
     }
   }
 
+  /* Returns if the tab is active or not. */
   get active : Bool {
     tab == of
   }
 
+  /* Returns the icon that belongs to the given type. */
   get icon : Html {
     case (of) {
-      Documentation.Type::Component =>
+      Type::Component =>
         <svg::icon
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -85,7 +91,7 @@ component Documentation.Tab {
 
         </svg>
 
-      Documentation.Type::Module =>
+      Type::Module =>
         <svg::icon
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -118,7 +124,7 @@ component Documentation.Tab {
 
         </svg>
 
-      Documentation.Type::Store =>
+      Type::Store =>
         <svg::icon
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -143,14 +149,16 @@ component Documentation.Tab {
     }
   }
 
+  /* Returns the title of the tab. */
   get title : String {
     case (of) {
-      Documentation.Type::Component => "Components"
-      Documentation.Type::Module => "Modules"
-      Documentation.Type::Store => "Stores"
+      Type::Component => "Components"
+      Type::Module => "Modules"
+      Type::Store => "Stores"
     }
   }
 
+  /* Renders the component. */
   fun render : Html {
     <a::base href={"/" + nameOf(of)}>
       <{ icon }>

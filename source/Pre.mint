@@ -1,5 +1,6 @@
 /* Component for rendering source code. */
-component Documentation.Pre {
+component Pre {
+  /* The code to render. */
   property code : String = ""
 
   style base {

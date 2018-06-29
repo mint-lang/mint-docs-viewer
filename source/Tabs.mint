@@ -1,5 +1,6 @@
-component Documentation.Tabs {
-  connect Documentation.Store exposing { entityColor, stores, components, modules }
+/* A component for the top-level entity tabs. */
+component Tabs {
+  connect Application exposing { entityColor, stores, components, modules }
 
   style base {
     border-bottom: 5px solid {entityColor};
@@ -9,18 +10,19 @@ component Documentation.Tabs {
     color: #EEE;
   }
 
+  /* Renders the component. */
   fun render : Html {
     <div::base>
       <Unless condition={Array.isEmpty(components)}>
-        <Documentation.Tab of={Documentation.Type::Component}/>
+        <Tab of={Type::Component}/>
       </Unless>
 
       <Unless condition={Array.isEmpty(modules)}>
-        <Documentation.Tab of={Documentation.Type::Module}/>
+        <Tab of={Type::Module}/>
       </Unless>
 
       <Unless condition={Array.isEmpty(stores)}>
-        <Documentation.Tab of={Documentation.Type::Store}/>
+        <Tab of={Type::Store}/>
       </Unless>
     </div>
   }

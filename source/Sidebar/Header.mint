@@ -1,4 +1,6 @@
-component Documentation.Sidebar.Header {
+/* A component for the sidebar header. */
+component Sidebar.Header {
+  /* The text to render. */
   property text : String = ""
 
   style base {
@@ -8,6 +10,7 @@ component Documentation.Sidebar.Header {
     font-size: 14px;
   }
 
+  /* Renders the component. */
   fun render : Html {
     <div::base>
       <{ text }>

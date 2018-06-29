@@ -1,5 +1,6 @@
+/* The main component. */
 component Main {
-  connect Documentation.Store exposing { load, components, stores, selected }
+  connect Application exposing { status, load, components, stores, selected }
 
   style base {
     font-family: sans-serif;
@@ -14,72 +15,30 @@ component Main {
     flex: 1;
   }
 
+  /* Returns the content to render. */
   get content : Html {
-    <Documentation.Content/>
-  }
-
-  fun render : Html {
     <div::base>
-      <Documentation.Tabs/>
+      <Tabs/>
 
       <div::content>
-        <Documentation.Sidebar/>
-        <{ content }>
+        <Sidebar/>
+        <Page/>
       </div>
     </div>
   }
-}
 
-routes {
-  /:tab/:selected (tab : String, selected : String) {
-    do {
-      tabId =
-        case (tab) {
-          "component" => Documentation.Type::Component
-          "module" => Documentation.Type::Module
-          "store" => Documentation.Type::Store
-          => Documentation.Type::Component
-        }
+  /* Renders the component. */
+  fun render : Html {
+    case (status) {
+      Status::HttpError => <Error content="Could not load the documentation!"/>
 
-      Documentation.Store.load()
-      Documentation.Store.selectTab(tabId)
-      Documentation.Store.select(selected)
-    }
-  }
+      Status::JsonError => <Error content="Could not parse the documentation json!"/>
 
-  /:tab (tab : String) {
-    do {
-      Documentation.Store.load()
+      Status::DecodeError => <Error content="Could not decode the documentation!"/>
 
-      tabId =
-        case (tab) {
-          "component" => Documentation.Type::Component
-          "module" => Documentation.Type::Module
-          "store" => Documentation.Type::Store
-          => Documentation.Type::Component
-        }
+      Status::Initial => <div/>
 
-      empty =
-        case (tabId) {
-          Documentation.Type::Component => Array.isEmpty(Documentation.Store.components)
-          Documentation.Type::Module => Array.isEmpty(Documentation.Store.modules)
-          Documentation.Type::Store => Array.isEmpty(Documentation.Store.stores)
-        }
-
-      if (empty) {
-        Window.navigate("/")
-      } else {
-        do {
-          Documentation.Store.selectTab(tabId)
-        }
-      }
-    }
-  }
-
-  * {
-    do {
-      Documentation.Store.load()
-      Documentation.Store.selectTab(Documentation.Type::Component)
+      Status::Ok => content
     }
   }
 }
