@@ -1,7 +1,8 @@
 {
   "name": "mint-docs-viewer",
   "application": {
-    "head": "assets/head.html"
+    "head": "assets/head.html",
+    "title": "Documentation"
   },
   "source-directories": [
     "source"

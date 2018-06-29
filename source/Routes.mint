@@ -1,16 +1,8 @@
 routes {
   /:tab/:selected (tab : String, selected : String) {
     do {
-      tabId =
-        case (tab) {
-          "component" => Type::Component
-          "module" => Type::Module
-          "store" => Type::Store
-          => Type::Component
-        }
-
       Application.load()
-      Application.selectTab(tabId)
+      Application.selectTab(Type.fromString(tab))
       Application.select(selected)
     }
   }
@@ -20,16 +12,13 @@ routes {
       Application.load()
 
       tabId =
-        case (tab) {
-          "component" => Type::Component
-          "module" => Type::Module
-          "store" => Type::Store
-          => Type::Component
-        }
+        Type.fromString(tab)
 
       empty =
         case (tabId) {
           Type::Component => Array.isEmpty(Application.components)
+          Type::Provider => Array.isEmpty(Application.providers)
+          Type::Record => Array.isEmpty(Application.records)
           Type::Module => Array.isEmpty(Application.modules)
           Type::Store => Array.isEmpty(Application.stores)
         }

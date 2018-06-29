@@ -1,6 +1,6 @@
 /* The main component. */
 component Main {
-  connect Application exposing { status, load, components, stores, selected }
+  connect Application exposing { components, selected, status, stores, load }
 
   style base {
     font-family: sans-serif;
@@ -30,14 +30,10 @@ component Main {
   /* Renders the component. */
   fun render : Html {
     case (status) {
-      Status::HttpError => <Error content="Could not load the documentation!"/>
-
       Status::JsonError => <Error content="Could not parse the documentation json!"/>
-
       Status::DecodeError => <Error content="Could not decode the documentation!"/>
-
+      Status::HttpError => <Error content="Could not load the documentation!"/>
       Status::Initial => <div/>
-
       Status::Ok => content
     }
   }

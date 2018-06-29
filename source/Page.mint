@@ -1,11 +1,51 @@
+component Field {
+  property mapping : Maybe(String) = Maybe.nothing()
+  property type : String = ""
+  property name : String = ""
+
+  style base {
+    font-family: Source Code Pro;
+    padding-top: 15px;
+    font-size: 18px;
+    display: flex;
+  }
+
+  style type {
+    color: #2e894e;
+
+    &:before {
+      font-weight: 300;
+      margin: 0 5px;
+      content: ":";
+      color: #999;
+    }
+  }
+
+  style key {
+    font-weight: bold;
+  }
+
+  fun render : Html {
+    <div::base>
+      <div::key>
+        <{ name }>
+      </div>
+
+      <div::type>
+        <{ type }>
+      </div>
+    </div>
+  }
+}
+
 /*
 A component for rendering an top-level enitity (module, store, etc..).
 
 It can render:
-- properties
 - computed properties
-- styles
+- properties
 - functions
+- styles
 */
 component Page {
   connect Application exposing { selected }
@@ -47,6 +87,26 @@ component Page {
       <div::description>
         <RawHtml content={selected.description}/>
       </div>
+
+      <Unless condition={Array.isEmpty(connects)}>
+        <div::section>
+          <{ "Connected Stores" }>
+        </div>
+
+        <div>
+          <{ connects }>
+        </div>
+      </Unless>
+
+      <Unless condition={Array.isEmpty(fields)}>
+        <div::section>
+          <{ "Fields" }>
+        </div>
+
+        <div>
+          <{ fields }>
+        </div>
+      </Unless>
 
       <Unless condition={Array.isEmpty(properties)}>
         <div::section>
@@ -112,5 +172,22 @@ component Page {
             source={method.source}
             name={method.name}
             type={method.type}/>)
+
+    connects =
+      selected.connects
+      |> Array.map(
+        \item : Connect =>
+          <Connection
+            store={item.store}
+            keys={item.keys}/>)
+
+    fields =
+      selected.fields
+      |> Array.map(
+        \item : RecordField =>
+          <Field
+            mapping={item.mapping}
+            type={item.type}
+            name={item.key}/>)
   }
 }

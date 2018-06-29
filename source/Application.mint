@@ -3,6 +3,12 @@ store Application {
   /* The components. */
   property components : Array(Component) = []
 
+  /* The providers. */
+  property providers : Array(Provider) = []
+
+  /* The records. */
+  property records : Array(Record) = []
+
   /* The modules. */
   property modules : Array(Module) = []
 
@@ -17,29 +23,6 @@ store Application {
 
   /* The selected tab. */
   property tab : Type = Type::Component
-
-  /* Returns the color of the current entity. */
-  get entityColor : String {
-    case (tab) {
-      Type::Component => "#369e58"
-      Type::Module => "#be08d0"
-      Type::Store => "#d02e2e"
-    }
-  }
-
-  /* Returns the name of the current tab. */
-  get tabName : String {
-    nameOf(tab)
-  }
-
-  /* Returns the nam ef the given type. */
-  fun nameOf (tab : Type) : String {
-    case (tab) {
-      Type::Component => "component"
-      Type::Module => "module"
-      Type::Store => "store"
-    }
-  }
 
   /* Loads the documentation. */
   fun load : Void {
@@ -58,10 +41,12 @@ store Application {
 
         next
           { state |
-            status = Status::Ok,
             components = object.components,
+            providers = object.providers,
             modules = object.modules,
-            stores = object.stores
+            records = object.records,
+            stores = object.stores,
+            status = Status::Ok
           }
       } catch Http.ErrorResponse => error {
         next { state | status = Status::HttpError }
@@ -79,21 +64,17 @@ store Application {
   fun select (name : String) : Void {
     next { state | selected = selected }
   } where {
-    componentContents =
-      Array.map(
-        \item : Component => Content.fromComponent(item),
-        components)
-
-    moduleContents =
-      Array.map(\item : Module => Content.fromModule(item), modules)
-
-    storeContents =
-      Array.map(\item : Store => Content.fromStore(item), stores)
+    items =
+      case (tab) {
+        Type::Component => Array.map(Content.fromComponent, components)
+        Type::Provider => Array.map(Content.fromProvider, providers)
+        Type::Record => Array.map(Content.fromRecord, records)
+        Type::Module => Array.map(Content.fromModule, modules)
+        Type::Store => Array.map(Content.fromStore, stores)
+      }
 
     selected =
-      componentContents
-      |> Array.Extra.concat(storeContents)
-      |> Array.Extra.concat(moduleContents)
+      items
       |> Array.find(\item : Content => item.name == name)
       |> Maybe.withDefault(Content.empty())
   }
@@ -116,6 +97,18 @@ store Application {
           components
           |> Array.first()
           |> Maybe.map(\item : Component => item.name)
+          |> Maybe.withDefault("")
+
+        Type::Provider =>
+          providers
+          |> Array.first()
+          |> Maybe.map(\item : Provider => item.name)
+          |> Maybe.withDefault("")
+
+        Type::Record =>
+          records
+          |> Array.first()
+          |> Maybe.map(\item : Record => item.name)
           |> Maybe.withDefault("")
 
         Type::Module =>

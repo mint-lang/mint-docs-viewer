@@ -1,9 +1,9 @@
 /* A component for the top-level entity tabs. */
 component Tabs {
-  connect Application exposing { entityColor, stores, components, modules }
+  connect Application exposing { components, providers, modules, stores, records, tab }
 
   style base {
-    border-bottom: 5px solid {entityColor};
+    border-bottom: 5px solid {Type.color(tab)};
     font-weight: bold;
     background: #333;
     display: flex;
@@ -23,6 +23,14 @@ component Tabs {
 
       <Unless condition={Array.isEmpty(stores)}>
         <Tab of={Type::Store}/>
+      </Unless>
+
+      <Unless condition={Array.isEmpty(providers)}>
+        <Tab of={Type::Provider}/>
+      </Unless>
+
+      <Unless condition={Array.isEmpty(records)}>
+        <Tab of={Type::Record}/>
       </Unless>
     </div>
   }

@@ -7,7 +7,35 @@ module Content {
       computedProperties = item.computedProperties,
       properties = item.properties,
       functions = item.functions,
-      name = item.name
+      connects = item.connects,
+      name = item.name,
+      fields = []
+    }
+  }
+
+  /* Creates a new `Content` from a `Record`. */
+  fun fromRecord (item : Record) : Content {
+    {
+      description = Maybe.withDefault("", item.description),
+      computedProperties = [],
+      fields = item.fields,
+      name = item.name,
+      properties = [],
+      functions = [],
+      connects = []
+    }
+  }
+
+  /* Creates a new `Content` from a `Provider`. */
+  fun fromProvider (item : Provider) : Content {
+    {
+      description = Maybe.withDefault("", item.description),
+      functions = item.functions,
+      computedProperties = [],
+      name = item.name,
+      properties = [],
+      connects = [],
+      fields = []
     }
   }
 
@@ -18,7 +46,9 @@ module Content {
       computedProperties = item.computedProperties,
       properties = item.properties,
       functions = item.functions,
-      name = item.name
+      name = item.name,
+      connects = [],
+      fields = []
     }
   }
 
@@ -29,7 +59,9 @@ module Content {
       functions = item.functions,
       computedProperties = [],
       name = item.name,
-      properties = []
+      properties = [],
+      connects = [],
+      fields = []
     }
   }
 
@@ -40,6 +72,8 @@ module Content {
       description = "",
       properties = [],
       functions = [],
+      connects = [],
+      fields = [],
       name = ""
     }
   }

@@ -1,6 +1,6 @@
 /* Renders a sidebar item. */
 component Sidebar.Item {
-  connect Application exposing { tabName, entityColor }
+  connect Application exposing { tab }
 
   /* The type of the item. */
   property type : Type = Type::Component
@@ -26,7 +26,7 @@ component Sidebar.Item {
   }
 
   style badge {
-    background-color: {entityColor};
+    background-color: {Type.color(tab)};
     justify-content: center;
     display: inline-flex;
     align-items: center;
@@ -39,20 +39,11 @@ component Sidebar.Item {
     color: #FFF;
   }
 
-  /* Returns the character for the label. */
-  get char : String {
-    case (type) {
-      Type::Component => "C"
-      Type::Module => "M"
-      Type::Store => "S"
-    }
-  }
-
   /* Renders the component. */
   fun render : Html {
-    <a::base href={"/" + tabName + "/" + text}>
+    <a::base href={"/" + Type.path(tab) + "/" + text}>
       <div::badge>
-        <{ char }>
+        <{ Type.char(tab) }>
       </div>
 
       <span::span>

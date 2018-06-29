@@ -1,6 +1,6 @@
 /* A component for the sidebar. */
 component Sidebar {
-  connect Application exposing { components, stores, tab, modules }
+  connect Application exposing { components, providers, records, modules, stores, tab }
 
   style base {
     background: #F5F5F5;
@@ -25,12 +25,28 @@ component Sidebar {
               type={Type::Component}
               text={item.name}/>)
 
+      Type::Provider =>
+        providers
+        |> Array.map(
+          \item : Provider =>
+            <Sidebar.Item
+              type={Type::Provider}
+              text={item.name}/>)
+
       Type::Store =>
         stores
         |> Array.map(
           \item : Store =>
             <Sidebar.Item
               type={Type::Store}
+              text={item.name}/>)
+
+      Type::Record =>
+        records
+        |> Array.map(
+          \item : Record =>
+            <Sidebar.Item
+              type={Type::Record}
               text={item.name}/>)
 
       Type::Module =>

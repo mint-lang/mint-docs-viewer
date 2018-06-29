@@ -12,7 +12,8 @@ component RawHtml {
       margin-bottom: 0;
     }
 
-    & code {
+    & pre,
+    & p code {
       font-family: Source Code Pro;
       background: #F2F2F2;
       border-radius: 2px;

@@ -20,11 +20,18 @@ record State {
   type : String
 }
 
+/* Represents a store connection. */
+record Connect {
+  keys : Array(String),
+  store : String
+}
+
 /* Represents a component. */
 record Component {
   computedProperties : Array(ComputedProperty) from "computed-properties",
   properties : Array(Property),
   description : Maybe(String),
+  connects : Array(Connect),
   functions : Array(Method),
   state : Maybe(State),
   name : String
@@ -48,6 +55,13 @@ record Method {
   type : String
 }
 
+record Provider {
+  description : Maybe(String),
+  functions : Array(Method),
+  subscription : String,
+  name : String
+}
+
 /* Represents a function argument. */
 record Argument {
   name : String,
@@ -65,6 +79,8 @@ record Module {
 record Content {
   computedProperties : Array(ComputedProperty),
   properties : Array(Property),
+  fields : Array(RecordField),
+  connects : Array(Connect),
   functions : Array(Method),
   description : String,
   name : String
@@ -73,20 +89,36 @@ record Content {
 /* Represents the documentation of an application or package. */
 record Documentation {
   components : Array(Component),
+  providers : Array(Provider),
+  records : Array(Record),
   modules : Array(Module),
   stores : Array(Store)
 }
 
+record RecordField {
+  mapping : Maybe(String),
+  type : String,
+  key : String
+}
+
+record Record {
+  fields : Array(RecordField),
+  description : Maybe(String),
+  name : String
+}
+
 enum Type {
   Component
+  Provider
+  Record
   Module
   Store
 }
 
 enum Status {
+  DecodeError
   HttpError
   JsonError
-  DecodeError
   Initial
   Ok
 }
