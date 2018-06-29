@@ -8,6 +8,7 @@ module Type {
       "record" => Result.ok(Type::Record)
       "module" => Result.ok(Type::Module)
       "store" => Result.ok(Type::Store)
+      "enum" => Result.ok(Type::Enum)
       => Result.error("Cannot find tab!")
     }
   }
@@ -20,6 +21,7 @@ module Type {
       Type::Record => "R"
       Type::Module => "M"
       Type::Store => "S"
+      Type::Enum => "E"
     }
   }
 
@@ -31,6 +33,7 @@ module Type {
       Type::Record => "#673ab7"
       Type::Module => "#be08d0"
       Type::Store => "#d02e2e"
+      Type::Enum => "#00bbb5"
     }
   }
 
@@ -42,6 +45,7 @@ module Type {
       Type::Record => "record"
       Type::Module => "module"
       Type::Store => "store"
+      Type::Enum => "enum"
     }
   }
 
@@ -53,6 +57,7 @@ module Type {
       Type::Record => "Records"
       Type::Module => "Modules"
       Type::Store => "Stores"
+      Type::Enum => "Enums"
     }
   }
 
@@ -199,6 +204,23 @@ module Type {
               "88zm0 8.975c-3.006 0-7.588-.523-10-2.256v2.44c0 1.926 4." \
               "656 3.487 10 3.487 5.345 0 10-1.562 10-3.487v-2.44c-2.41" \
               "8 1.738-7.005 2.256-10 2.256z"
+            }/>
+
+        </svg>
+
+      Type::Enum =>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24">
+
+          <path
+            d={
+              "M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10" \
+              "-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12" \
+              " 12 12 12-5.373 12-12-5.373-12-12-12zm6 17h-12v-2h12v2zm" \
+              "0-4h-12v-2h12v2zm0-4h-12v-2h12v2z"
             }/>
 
         </svg>

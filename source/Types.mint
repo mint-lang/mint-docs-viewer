@@ -83,6 +83,7 @@ record Content {
   fields : Array(RecordField),
   connects : Array(Connect),
   functions : Array(Method),
+  options : Array(String),
   description : String,
   state : Maybe(State),
   name : String
@@ -94,7 +95,8 @@ record Documentation {
   providers : Array(Provider),
   records : Array(Record),
   modules : Array(Module),
-  stores : Array(Store)
+  stores : Array(Store),
+  enums : Array(Enum)
 }
 
 /* Represents a record field. */
@@ -111,13 +113,33 @@ record Record {
   name : String
 }
 
+/* Represents an enum. */
+record Enum {
+  description : Maybe(String),
+  options : Array(String),
+  name : String
+}
+
+/* Represents the possible top-level entities. */
+
 enum Type {
   Component
   Provider
   Record
   Module
   Store
+  Enum
 }
+
+/*
+Represents the status of the application.
+
+- `DecodeError` - An error occured when trying to decode the `documentation.json`
+- `JsonError` - An error occured when trying to parse the `documentation.json`
+- `HttpError` - An error occured when trying to load the `documentation.json`
+- `Ok` - The `documentation.json` loaded, parsed and decoded properly.
+- `Initial` - The initial state
+*/
 
 enum Status {
   DecodeError

@@ -78,6 +78,16 @@ component Page {
         </div>
       </Unless>
 
+      <Unless condition={Array.isEmpty(options)}>
+        <div::section>
+          <{ "Options" }>
+        </div>
+
+        <div>
+          <{ options }>
+        </div>
+      </Unless>
+
       <Unless condition={Array.isEmpty(properties)}>
         <div::section>
           <{ "Properties" }>
@@ -168,5 +178,9 @@ component Page {
             type={item.type}
             data={item.data}/>)
       |> Maybe.withDefault(Html.empty())
+
+    options =
+      selected.options
+      |> Array.map(\item : String => <Option name={item}/>)
   }
 }

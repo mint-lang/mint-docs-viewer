@@ -1,6 +1,14 @@
 /* A component for the sidebar. */
 component Sidebar {
-  connect Application exposing { components, providers, records, modules, stores, tab }
+  connect Application exposing {
+    components,
+    providers,
+    records,
+    modules,
+    stores,
+    enums,
+    tab
+  }
 
   style base {
     background: #F5F5F5;
@@ -55,6 +63,14 @@ component Sidebar {
           \item : Module =>
             <Sidebar.Item
               type={Type::Module}
+              text={item.name}/>)
+
+      Type::Enum =>
+        enums
+        |> Array.map(
+          \item : Enum =>
+            <Sidebar.Item
+              type={Type::Enum}
               text={item.name}/>)
     }
   }

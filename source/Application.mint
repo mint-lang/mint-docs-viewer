@@ -15,6 +15,9 @@ store Application {
   /* The store. */
   property stores : Array(Store) = []
 
+  /* The store. */
+  property enums : Array(Enum) = []
+
   /* The selected entity. */
   property selected : Content = Content.empty()
 
@@ -46,6 +49,7 @@ store Application {
             modules = object.modules,
             records = object.records,
             stores = object.stores,
+            enums = object.enums,
             status = Status::Ok
           }
       } catch Http.ErrorResponse => error {
@@ -78,6 +82,7 @@ store Application {
           Type::Record => Array.map(Content.fromRecord, records)
           Type::Module => Array.map(Content.fromModule, modules)
           Type::Store => Array.map(Content.fromStore, stores)
+          Type::Enum => Array.map(Content.fromEnum, enums)
         }
 
       /* Try to show the selected entity. */

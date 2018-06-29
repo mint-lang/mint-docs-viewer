@@ -10,6 +10,7 @@ module Content {
       connects = item.connects,
       state = item.state,
       name = item.name,
+      options = [],
       fields = []
     }
   }
@@ -24,7 +25,23 @@ module Content {
       name = item.name,
       properties = [],
       functions = [],
-      connects = []
+      connects = [],
+      options = []
+    }
+  }
+
+  /* Creates a new `Content` from an `Enum`. */
+  fun fromEnum (item : Enum) : Content {
+    {
+      description = Maybe.withDefault("", item.description),
+      state = Maybe.nothing(),
+      computedProperties = [],
+      options = item.options,
+      name = item.name,
+      properties = [],
+      functions = [],
+      connects = [],
+      fields = []
     }
   }
 
@@ -38,6 +55,7 @@ module Content {
       name = item.name,
       properties = [],
       connects = [],
+      options = [],
       fields = []
     }
   }
@@ -52,6 +70,7 @@ module Content {
       state = Maybe.nothing(),
       name = item.name,
       connects = [],
+      options = [],
       fields = []
     }
   }
@@ -66,6 +85,7 @@ module Content {
       name = item.name,
       properties = [],
       connects = [],
+      options = [],
       fields = []
     }
   }
@@ -79,6 +99,7 @@ module Content {
       properties = [],
       functions = [],
       connects = [],
+      options = [],
       fields = [],
       name = ""
     }

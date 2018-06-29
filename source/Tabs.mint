@@ -1,6 +1,14 @@
 /* A component for the top-level entity tabs. */
 component Tabs {
-  connect Application exposing { components, providers, modules, stores, records, tab }
+  connect Application exposing {
+    components,
+    providers,
+    modules,
+    stores,
+    records,
+    enums,
+    tab
+  }
 
   style base {
     border-bottom: 5px solid {Type.color(tab)};
@@ -31,6 +39,10 @@ component Tabs {
 
       <Unless condition={Array.isEmpty(records)}>
         <Tab of={Type::Record}/>
+      </Unless>
+
+      <Unless condition={Array.isEmpty(enums)}>
+        <Tab of={Type::Enum}/>
       </Unless>
     </div>
   }
