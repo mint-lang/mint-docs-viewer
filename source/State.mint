@@ -1,5 +1,9 @@
+/* A component to render the state of a component. */
 component State {
+  /* The type of the state. */
   property type : String = ""
+
+  /* The initial state value. */
   property data : String = ""
 
   style base {
@@ -31,6 +35,7 @@ component State {
     display: block;
   }
 
+  /* Renders the component. */
   fun render : Html {
     <div::base>
       <div::type>

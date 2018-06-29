@@ -55,6 +55,7 @@ record Method {
   type : String
 }
 
+/* Represents a provider. */
 record Provider {
   description : Maybe(String),
   functions : Array(Method),
@@ -96,12 +97,14 @@ record Documentation {
   stores : Array(Store)
 }
 
+/* Represents a record field. */
 record RecordField {
   mapping : Maybe(String),
   type : String,
   key : String
 }
 
+/* Represents a record. */
 record Record {
   fields : Array(RecordField),
   description : Maybe(String),

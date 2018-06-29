@@ -1,3 +1,4 @@
+/* Represents the state of a source panel. */
 record Source.State {
   shown : Bool
 }

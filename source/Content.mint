@@ -1,4 +1,4 @@
-/* Utility functions for the content type. */
+/* Utility functions for the `Content` type. */
 module Content {
   /* Creates a new `Content` from a `Component`. */
   fun fromComponent (item : Component) : Content {

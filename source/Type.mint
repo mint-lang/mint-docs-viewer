@@ -1,6 +1,8 @@
+/* Utility functions for the `Type` type. */
 module Type {
-  fun fromString (name : String) : Result(String, Type) {
-    case (name) {
+  /* Tries to get the type from the given string. */
+  fun fromString (input : String) : Result(String, Type) {
+    case (input) {
       "component" => Result.ok(Type::Component)
       "provider" => Result.ok(Type::Provider)
       "record" => Result.ok(Type::Record)
@@ -10,6 +12,7 @@ module Type {
     }
   }
 
+  /* Returns the character of the given type. */
   fun char (type : Type) : String {
     case (type) {
       Type::Component => "C"
@@ -20,6 +23,7 @@ module Type {
     }
   }
 
+  /* Returns the color of the given type. */
   fun color (type : Type) : String {
     case (type) {
       Type::Component => "#369e58"
@@ -30,6 +34,7 @@ module Type {
     }
   }
 
+  /* Returns the path of the given type. */
   fun path (type : Type) : String {
     case (type) {
       Type::Component => "component"
@@ -40,6 +45,7 @@ module Type {
     }
   }
 
+  /* Returns the title of the given type. */
   fun title (type : Type) : String {
     case (type) {
       Type::Component => "Components"
@@ -50,7 +56,7 @@ module Type {
     }
   }
 
-  /* Returns the icon that belongs to the given type. */
+  /* Returns the icon of the given type. */
   fun icon (type : Type) : Html {
     case (type) {
       Type::Component =>

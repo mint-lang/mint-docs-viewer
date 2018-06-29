@@ -1,6 +1,12 @@
+/* A component to render a record definitions field. */
 component Field {
+  /* The mapping of the field. */
   property mapping : Maybe(String) = Maybe.nothing()
+
+  /* The type of the field. */
   property type : String = ""
+
+  /* The name of the field. */
   property name : String = ""
 
   style base {
@@ -25,6 +31,7 @@ component Field {
     font-weight: bold;
   }
 
+  /* Renders the component. */
   fun render : Html {
     <div::base>
       <div::key>

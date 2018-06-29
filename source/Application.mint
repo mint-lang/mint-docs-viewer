@@ -60,13 +60,17 @@ store Application {
     }
   }
 
-  fun route (tabName : String, maybeName : Maybe(String)) : Void {
+  /* Handles the routing logic of a tab and enitity. */
+  fun route (tabName : String, entity : Maybe(String)) : Void {
     do {
+      /* Load the documentation.json. */
       Application.load()
 
+      /* Get the type from string. */
       tab =
         Type.fromString(tabName)
 
+      /* Get the converted items from based on the type. */
       items =
         case (tab) {
           Type::Component => Array.map(Content.fromComponent, components)
@@ -76,30 +80,39 @@ store Application {
           Type::Store => Array.map(Content.fromStore, stores)
         }
 
+      /* Try to show the selected entity. */
       do {
         selected =
-          maybeName
+          entity
           |> Maybe.map(
             \name : String => Array.find(\item : Content => item.name == name, items))
           |> Maybe.Extra.flatten()
           |> Maybe.toResult("Could not find entity!")
 
+        /* If there is a selected entity show it. */
         next
           { state |
             selected = selected,
             tab = tab
           }
+
+        /* If there is not try to navigate to the first item. */
       } catch String => error {
         do {
           first =
             Array.first(items)
             |> Maybe.toResult("Could not find first!")
 
+          /* If there is a first item navigate to it. */
           Window.navigate("/" + Type.path(tab) + "/" + first.name)
+
+          /* If there is not navigate to root. */
         } catch String => error {
           Window.navigate("/")
         }
       }
+
+      /* If we could not find a proper type. */
     } catch String => error {
       Window.navigate("/")
     }
