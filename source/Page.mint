@@ -191,7 +191,11 @@ component Page {
 
     options =
       selected.options
-      |> Array.map(\item : String => <Option name={item}/>)
+      |> Array.map(
+        \item : EnumOption =>
+          <Option
+            description={item.description}
+            name={item.name}/>)
 
     uses =
       selected.uses

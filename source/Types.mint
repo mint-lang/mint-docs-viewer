@@ -89,9 +89,9 @@ record Content {
   computedProperties : Array(ComputedProperty),
   properties : Array(Property),
   fields : Array(RecordField),
+  options : Array(EnumOption),
   connects : Array(Connect),
   functions : Array(Method),
-  options : Array(String),
   description : String,
   state : Maybe(State),
   uses : Array(Use),
@@ -125,12 +125,17 @@ record Record {
 /* Represents an enum. */
 record Enum {
   description : Maybe(String),
-  options : Array(String),
+  options : Array(EnumOption),
+  name : String
+}
+
+/* Represents an enum option. */
+record EnumOption {
+  description : Maybe(String),
   name : String
 }
 
 /* Represents the possible top-level entities. */
-
 enum Type {
   Component
   Provider
@@ -140,20 +145,20 @@ enum Type {
   Enum
 }
 
-/*
-Represents the status of the application.
-
-- `DecodeError` - An error occured when trying to decode the `documentation.json`
-- `JsonError` - An error occured when trying to parse the `documentation.json`
-- `HttpError` - An error occured when trying to load the `documentation.json`
-- `Ok` - The `documentation.json` loaded, parsed and decoded properly.
-- `Initial` - The initial state
-*/
-
+/* Represents the status of the application. */
 enum Status {
+  /* An error occured when trying to decode the `documentation.json` */
   DecodeError
+
+  /* An error occured when trying to parse the `documentation.json` */
   HttpError
+
+  /* An error occured when trying to load the `documentation.json` */
   JsonError
+
+  /* The initial state */
   Initial
+
+  /* The `documentation.json` loaded, parsed and decoded properly */
   Ok
 }

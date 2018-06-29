@@ -72,7 +72,7 @@ component Entity {
   }
 
   style description {
-    padding: 20px 0;
+    padding: 18px 0;
     padding-left: 20px;
     opacity: 0.8;
   }
