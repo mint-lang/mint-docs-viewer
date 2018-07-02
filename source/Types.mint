@@ -110,10 +110,12 @@ record Documentation {
   name : String
 }
 
+/* Reprensents the root data. */
 record Root {
   packages : Array(Documentation)
 }
 
+/* Represents a dependency. */
 record Dependency {
   repository : String,
   constraint : String,

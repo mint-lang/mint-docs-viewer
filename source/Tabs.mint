@@ -10,10 +10,12 @@ component Tabs {
     color: #EEE;
   }
 
+  /* Returns whether the dashboard is active or not. */
   get isDashboard : Bool {
     page == Page::Dashboard
   }
 
+  /* Returns the color of the active tab, so the bottom border can match it. */
   get color : String {
     case (page) {
       Page::Dashboard => "#666"
@@ -22,7 +24,8 @@ component Tabs {
     }
   }
 
-  get dashbardIcon : Html {
+  /* Returns the icon for the dashboard. */
+  get dashboardIcon : Html {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -53,16 +56,12 @@ component Tabs {
     </svg>
   }
 
-  fun handleChange (event : Html.Event) : Void {
-    Window.navigate("/" + Dom.getValue(event.target))
-  }
-
   /* Renders the component. */
   fun render : Html {
     <div::base>
       <Tab
         active={page == Page::Dashboard}
-        icon={dashbardIcon}
+        icon={dashboardIcon}
         color="#666"
         link="/"/>
 

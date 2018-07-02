@@ -1,25 +1,18 @@
-component EntityTab {
-  connect Application exposing { tab, documentation, page }
-
-  /* The type for the tab. */
-  property of : Type = Type::Component
-
-  fun render : Html {
-    <Tab
-      link={"/" + documentation.name + "/" + Type.path(of)}
-      title={Type.title(of)}
-      color={Type.color(of)}
-      icon={Type.icon(of)}
-      active={of == tab && page == Page::Entity}/>
-  }
-}
-
-/* A component for the top-level entity tab. */
+/* A component to render a tab. */
 component Tab {
+  /* The icon on the left. */
   property icon : Html = Html.empty()
+
+  /* Whether or not the tab is active. */
   property active : Bool = false
+
+  /* The text to display. */
   property title : String = ""
+
+  /* The active color. */
   property color : String = ""
+
+  /* The url to link to. */
   property link : String = ""
 
   style base {

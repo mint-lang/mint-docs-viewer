@@ -9,11 +9,13 @@ store Application {
   /* The selected tab. */
   property tab : Type = Type::Component
 
-  /* All documentations. */
+  /* All documentations of the packages. */
   property documentations : Array(Documentation) = []
 
+  /* The selected packages documentation. */
   property documentation : Documentation = Documentation.empty()
 
+  /* The current page. */
   property page : Page = Page::Dashboard
 
   /* Loads the documentation. */
@@ -48,6 +50,7 @@ store Application {
     }
   }
 
+  /* Navigates to the dashboard. */
   fun dashboard : Void {
     do {
       load()
@@ -61,6 +64,7 @@ store Application {
     }
   }
 
+  /* Routes to the given package. */
   fun routePackage (name : String) : Void {
     do {
       /* Load the documentation.json. */

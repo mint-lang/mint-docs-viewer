@@ -1,3 +1,4 @@
+/* Dashboard for the documentation. */
 component Dashboard {
   connect Application exposing { documentations }
 
@@ -27,6 +28,7 @@ component Dashboard {
     font-size: 36px;
   }
 
+  /* Renders the component. */
   fun render : Html {
     <div::base>
       <div::title>

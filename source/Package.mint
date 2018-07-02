@@ -1,25 +1,4 @@
-component Dependency {
-  property repository : String = ""
-  property constraint : String = ""
-  property name : String = ""
-
-  fun render : Html {
-    <div>
-      <div>
-        <{ name }>
-      </div>
-
-      <div>
-        <{ constraint }>
-      </div>
-
-      <div>
-        <{ repository }>
-      </div>
-    </div>
-  }
-}
-
+/* Component to render package details. */
 component Package {
   connect Application exposing { documentation }
 
@@ -38,15 +17,27 @@ component Package {
     display: block;
   }
 
+  style subtitle {
+    margin-bottom: 5px;
+    font-size: 20px;
+  }
+
+  /* Renders the component. */
   fun render : Html {
     <div::base>
       <div::title>
         <{ documentation.name }>
       </div>
 
-      <div>
-        <{ dependencies }>
-      </div>
+      <Unless condition={Array.isEmpty(dependencies)}>
+        <div::subtitle>
+          <{ "Dependencies" }>
+        </div>
+
+        <div>
+          <{ dependencies }>
+        </div>
+      </Unless>
     </div>
   } where {
     dependencies =
