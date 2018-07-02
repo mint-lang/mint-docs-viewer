@@ -28,12 +28,12 @@ store Application {
           Json.parse(response.body)
           |> Maybe.toResult("")
 
-        documentations =
-          decode json as Array(Documentation)
+        root =
+          decode json as Root
 
         next
           { state |
-            documentations = documentations,
+            documentations = root.packages,
             status = Status::Ok
           }
       } catch Http.ErrorResponse => error {
@@ -52,7 +52,38 @@ store Application {
     do {
       load()
 
-      next { state | page = Page::Dashboard }
+      next
+        { state |
+          documentation = Documentation.empty(),
+          selected = Content.empty(),
+          page = Page::Dashboard
+        }
+    }
+  }
+
+  fun routePackage (name : String) : Void {
+    do {
+      /* Load the documentation.json. */
+      load()
+
+      /* Try to find the package. */
+      documentation =
+        documentations
+        |> Array.find(\item : Documentation => item.name == name)
+        |> Maybe.toResult("Could not find package!")
+
+      next
+        { state |
+          documentation = documentation,
+          page = Page::Package
+        }
+
+      /* If we could not the package. */
+    } catch String => error {
+      do {
+        Debug.log(error)
+        Window.navigate("/")
+      }
     }
   }
 
@@ -116,24 +147,18 @@ store Application {
 
             /* If there is not navigate to root. */
           } catch String => error {
-            do {
-              Debug.log(error)
-            }
+            Window.navigate("/" + documentation.name)
           }
         }
 
         /* If we could not find a proper type. */
       } catch String => error {
-        do {
-          Debug.log(error)
-        }
+        Window.navigate("/" + documentation.name)
       }
 
       /* If we could not the package. */
     } catch String => error {
-      do {
-        Debug.log(error)
-      }
+      Window.navigate("/")
     }
   }
 }

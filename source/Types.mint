@@ -100,12 +100,23 @@ record Content {
 
 /* Represents the documentation of an application or package. */
 record Documentation {
+  dependencies : Array(Dependency),
   components : Array(Component),
   providers : Array(Provider),
   records : Array(Record),
   modules : Array(Module),
   stores : Array(Store),
   enums : Array(Enum),
+  name : String
+}
+
+record Root {
+  packages : Array(Documentation)
+}
+
+record Dependency {
+  repository : String,
+  constraint : String,
   name : String
 }
 
@@ -140,6 +151,9 @@ record EnumOption {
 enum Page {
   /* The dashboard */
   Dashboard
+
+  /* A package */
+  Package
 
   /* Any other page */
   Entity

@@ -1,15 +1,32 @@
-/* A component for the top-level entity tab. */
-component Tab {
-  connect Application exposing { tab, documentation }
+component EntityTab {
+  connect Application exposing { tab, documentation, page }
 
   /* The type for the tab. */
   property of : Type = Type::Component
+
+  fun render : Html {
+    <Tab
+      link={"/" + documentation.name + "/" + Type.path(of)}
+      title={Type.title(of)}
+      color={Type.color(of)}
+      icon={Type.icon(of)}
+      active={of == tab && page == Page::Entity}/>
+  }
+}
+
+/* A component for the top-level entity tab. */
+component Tab {
+  property icon : Html = Html.empty()
+  property active : Bool = false
+  property title : String = ""
+  property color : String = ""
+  property link : String = ""
 
   style base {
     background: {background};
     text-decoration: none;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 15px;
     cursor: pointer;
     color: inherit;
     display: flex;
@@ -22,7 +39,6 @@ component Tab {
     & svg {
       filter: drop-shadow(0 1px 0 rgba(0,0,0,0.333));
       fill: currentColor;
-      margin-right: 10px;
       height: 18px;
       width: 18px;
     }
@@ -31,13 +47,14 @@ component Tab {
   style span {
     text-shadow: 0 1px 0 rgba(0,0,0,0.333);
     text-transform: uppercase;
+    margin-left: 10px;
     font-size: 14px;
   }
 
   /* Returns the background color of the tab. */
   get background : String {
     if (active) {
-      Type.color(of)
+      color
     } else {
       "transparent"
     }
@@ -53,19 +70,16 @@ component Tab {
     }
   }
 
-  /* Returns if the tab is active or not. */
-  get active : Bool {
-    tab == of
-  }
-
   /* Renders the component. */
   fun render : Html {
-    <a::base href={"/" + documentation.name + "/" + Type.path(of)}>
-      <{ Type.icon(of) }>
+    <a::base href={link}>
+      <{ icon }>
 
-      <span::span>
-        <{ Type.title(of) }>
-      </span>
+      <If condition={title != ""}>
+        <span::span>
+          <{ title }>
+        </span>
+      </If>
     </a>
   }
 }

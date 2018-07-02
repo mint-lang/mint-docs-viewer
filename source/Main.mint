@@ -16,21 +16,24 @@ component Main {
   }
 
   /* Returns the content to render. */
-  get entity : Html {
+  get main : Html {
     <div::base>
       <Tabs/>
 
-      <div::content>
-        <Sidebar/>
-        <Page/>
-      </div>
+      <{ content }>
     </div>
   }
 
   get content : Html {
     case (page) {
       Page::Dashboard => <Dashboard/>
-      Page::Entity => entity
+      Page::Package => <Package/>
+
+      Page::Entity =>
+        <div::content>
+          <Sidebar/>
+          <Page/>
+        </div>
     }
   }
 
@@ -41,7 +44,7 @@ component Main {
       Status::DecodeError => <Error content="Could not decode the documentation!"/>
       Status::HttpError => <Error content="Could not load the documentation!"/>
       Status::Initial => <div/>
-      Status::Ok => content
+      Status::Ok => main
     }
   }
 }

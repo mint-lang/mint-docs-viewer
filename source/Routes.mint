@@ -7,6 +7,10 @@ routes {
     Application.route(package, tab, Maybe.nothing())
   }
 
+  /:package (package : String) {
+    Application.routePackage(package)
+  }
+
   / {
     Application.dashboard()
   }
