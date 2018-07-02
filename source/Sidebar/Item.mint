@@ -1,6 +1,6 @@
 /* Renders a sidebar item. */
 component Sidebar.Item {
-  connect Application exposing { tab }
+  connect Application exposing { tab, documentation }
 
   /* The type of the item. */
   property type : Type = Type::Component
@@ -41,7 +41,7 @@ component Sidebar.Item {
 
   /* Renders the component. */
   fun render : Html {
-    <a::base href={"/" + Type.path(tab) + "/" + text}>
+    <a::base href={"/" + documentation.name + "/" + Type.path(tab) + "/" + text}>
       <div::badge>
         <{ Type.char(tab) }>
       </div>

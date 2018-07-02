@@ -1,13 +1,17 @@
 routes {
-  /:tab/:selected (tab : String, selected : String) {
-    Application.route(tab, Maybe.just(selected))
+  /:package/:tab/:selected (package : String, tab : String, selected : String) {
+    Application.route(package, tab, Maybe.just(selected))
   }
 
-  /:tab (tab : String) {
-    Application.route(tab, Maybe.nothing())
+  /:package/:tab (package : String, tab : String) {
+    Application.route(package, tab, Maybe.nothing())
+  }
+
+  / {
+    Application.dashboard()
   }
 
   * {
-    Application.route("component", Maybe.nothing())
+    Application.route("", "component", Maybe.nothing())
   }
 }

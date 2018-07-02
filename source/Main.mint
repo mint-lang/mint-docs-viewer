@@ -1,6 +1,6 @@
 /* The main component. */
 component Main {
-  connect Application exposing { components, selected, status, stores, load }
+  connect Application exposing { selected, status, load, page }
 
   style base {
     font-family: sans-serif;
@@ -16,7 +16,7 @@ component Main {
   }
 
   /* Returns the content to render. */
-  get content : Html {
+  get entity : Html {
     <div::base>
       <Tabs/>
 
@@ -25,6 +25,13 @@ component Main {
         <Page/>
       </div>
     </div>
+  }
+
+  get content : Html {
+    case (page) {
+      Page::Dashboard => <Dashboard/>
+      Page::Entity => entity
+    }
   }
 
   /* Renders the component. */

@@ -105,7 +105,8 @@ record Documentation {
   records : Array(Record),
   modules : Array(Module),
   stores : Array(Store),
-  enums : Array(Enum)
+  enums : Array(Enum),
+  name : String
 }
 
 /* Represents a record field. */
@@ -133,6 +134,15 @@ record Enum {
 record EnumOption {
   description : Maybe(String),
   name : String
+}
+
+/* Represents a page of the documentation. */
+enum Page {
+  /* The dashboard */
+  Dashboard
+
+  /* Any other page */
+  Entity
 }
 
 /* Represents the possible top-level entities. */

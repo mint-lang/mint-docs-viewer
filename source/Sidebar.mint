@@ -1,14 +1,6 @@
 /* A component for the sidebar. */
 component Sidebar {
-  connect Application exposing {
-    components,
-    providers,
-    records,
-    modules,
-    stores,
-    enums,
-    tab
-  }
+  connect Application exposing { documentation, tab }
 
   style base {
     background: #F5F5F5;
@@ -26,7 +18,7 @@ component Sidebar {
   get items : Array(Html) {
     case (tab) {
       Type::Component =>
-        components
+        documentation.components
         |> Array.map(
           \item : Component =>
             <Sidebar.Item
@@ -34,7 +26,7 @@ component Sidebar {
               text={item.name}/>)
 
       Type::Provider =>
-        providers
+        documentation.providers
         |> Array.map(
           \item : Provider =>
             <Sidebar.Item
@@ -42,7 +34,7 @@ component Sidebar {
               text={item.name}/>)
 
       Type::Store =>
-        stores
+        documentation.stores
         |> Array.map(
           \item : Store =>
             <Sidebar.Item
@@ -50,7 +42,7 @@ component Sidebar {
               text={item.name}/>)
 
       Type::Record =>
-        records
+        documentation.records
         |> Array.map(
           \item : Record =>
             <Sidebar.Item
@@ -58,7 +50,7 @@ component Sidebar {
               text={item.name}/>)
 
       Type::Module =>
-        modules
+        documentation.modules
         |> Array.map(
           \item : Module =>
             <Sidebar.Item
@@ -66,7 +58,7 @@ component Sidebar {
               text={item.name}/>)
 
       Type::Enum =>
-        enums
+        documentation.enums
         |> Array.map(
           \item : Enum =>
             <Sidebar.Item

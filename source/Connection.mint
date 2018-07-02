@@ -14,12 +14,8 @@ component Connection {
   }
 
   style name {
-    text-decoration: none;
+    display: inline;
     color: #2e894e;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 
   style keys {
@@ -43,9 +39,9 @@ component Connection {
   /* Renders the component. */
   fun render : Html {
     <div::base>
-      <a::name href={"/store/" + store}>
+      <div::name>
         <{ store }>
-      </a>
+      </div>
 
       <span>
         <{ " exposing {" }>

@@ -1,6 +1,6 @@
 /* A component for the top-level entity tab. */
 component Tab {
-  connect Application exposing { tab }
+  connect Application exposing { tab, documentation }
 
   /* The type for the tab. */
   property of : Type = Type::Component
@@ -60,7 +60,7 @@ component Tab {
 
   /* Renders the component. */
   fun render : Html {
-    <a::base href={"/" + Type.path(of)}>
+    <a::base href={"/" + documentation.name + "/" + Type.path(of)}>
       <{ Type.icon(of) }>
 
       <span::span>

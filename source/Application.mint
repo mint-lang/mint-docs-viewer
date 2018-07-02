@@ -1,23 +1,5 @@
 /* The main store of the application. */
 store Application {
-  /* The components. */
-  property components : Array(Component) = []
-
-  /* The providers. */
-  property providers : Array(Provider) = []
-
-  /* The records. */
-  property records : Array(Record) = []
-
-  /* The modules. */
-  property modules : Array(Module) = []
-
-  /* The store. */
-  property stores : Array(Store) = []
-
-  /* The store. */
-  property enums : Array(Enum) = []
-
   /* The selected entity. */
   property selected : Content = Content.empty()
 
@@ -26,6 +8,13 @@ store Application {
 
   /* The selected tab. */
   property tab : Type = Type::Component
+
+  /* All documentations. */
+  property documentations : Array(Documentation) = []
+
+  property documentation : Documentation = Documentation.empty()
+
+  property page : Page = Page::Dashboard
 
   /* Loads the documentation. */
   fun load : Void {
@@ -39,17 +28,12 @@ store Application {
           Json.parse(response.body)
           |> Maybe.toResult("")
 
-        object =
-          decode json as Documentation
+        documentations =
+          decode json as Array(Documentation)
 
         next
           { state |
-            components = object.components,
-            providers = object.providers,
-            modules = object.modules,
-            records = object.records,
-            stores = object.stores,
-            enums = object.enums,
+            documentations = documentations,
             status = Status::Ok
           }
       } catch Http.ErrorResponse => error {
@@ -64,62 +48,92 @@ store Application {
     }
   }
 
+  fun dashboard : Void {
+    do {
+      load()
+
+      next { state | page = Page::Dashboard }
+    }
+  }
+
   /* Handles the routing logic of a tab and enitity. */
-  fun route (tabName : String, entity : Maybe(String)) : Void {
+  fun route (packageName : String, tabName : String, entity : Maybe(String)) : Void {
     do {
       /* Load the documentation.json. */
-      Application.load()
+      load()
 
-      /* Get the type from string. */
-      tab =
-        Type.fromString(tabName)
+      /* Try to find the package. */
+      documentation =
+        documentations
+        |> Array.find(\item : Documentation => item.name == packageName)
+        |> Maybe.toResult("Could not find package!")
 
-      /* Get the converted items from based on the type. */
-      items =
-        case (tab) {
-          Type::Component => Array.map(Content.fromComponent, components)
-          Type::Provider => Array.map(Content.fromProvider, providers)
-          Type::Record => Array.map(Content.fromRecord, records)
-          Type::Module => Array.map(Content.fromModule, modules)
-          Type::Store => Array.map(Content.fromStore, stores)
-          Type::Enum => Array.map(Content.fromEnum, enums)
-        }
-
-      /* Try to show the selected entity. */
       do {
-        selected =
-          entity
-          |> Maybe.map(
-            \name : String => Array.find(\item : Content => item.name == name, items))
-          |> Maybe.Extra.flatten()
-          |> Maybe.toResult("Could not find entity!")
+        /* Get the type from string. */
+        tab =
+          Type.fromString(tabName)
 
-        /* If there is a selected entity show it. */
-        next
-          { state |
-            selected = selected,
-            tab = tab
+        /* Get the converted items from based on the type. */
+        items =
+          case (tab) {
+            Type::Component => Array.map(Content.fromComponent, documentation.components)
+            Type::Provider => Array.map(Content.fromProvider, documentation.providers)
+            Type::Record => Array.map(Content.fromRecord, documentation.records)
+            Type::Module => Array.map(Content.fromModule, documentation.modules)
+            Type::Store => Array.map(Content.fromStore, documentation.stores)
+            Type::Enum => Array.map(Content.fromEnum, documentation.enums)
           }
 
-        /* If there is not try to navigate to the first item. */
+        /* Try to show the selected entity. */
+        do {
+          selected =
+            entity
+            |> Maybe.map(
+              \name : String => Array.find(\item : Content => item.name == name, items))
+            |> Maybe.Extra.flatten()
+            |> Maybe.toResult("Could not find entity!")
+
+          /* If there is a selected entity show it. */
+          next
+            { state |
+              documentation = documentation,
+              page = Page::Entity,
+              selected = selected,
+              tab = tab
+            }
+
+          /* If there is not try to navigate to the first item. */
+        } catch String => error {
+          do {
+            first =
+              items
+              |> Array.first()
+              |> Maybe.toResult("Could not find first!")
+
+            /* If there is a first item navigate to it. */
+            Window.navigate(
+              "/" + documentation.name + "/" + Type.path(tab) + "/" + first.name)
+
+            /* If there is not navigate to root. */
+          } catch String => error {
+            do {
+              Debug.log(error)
+            }
+          }
+        }
+
+        /* If we could not find a proper type. */
       } catch String => error {
         do {
-          first =
-            Array.first(items)
-            |> Maybe.toResult("Could not find first!")
-
-          /* If there is a first item navigate to it. */
-          Window.navigate("/" + Type.path(tab) + "/" + first.name)
-
-          /* If there is not navigate to root. */
-        } catch String => error {
-          Window.navigate("/")
+          Debug.log(error)
         }
       }
 
-      /* If we could not find a proper type. */
+      /* If we could not the package. */
     } catch String => error {
-      Window.navigate("/")
+      do {
+        Debug.log(error)
+      }
     }
   }
 }
