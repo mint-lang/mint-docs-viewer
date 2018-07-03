@@ -92,6 +92,7 @@ record Content {
   options : Array(EnumOption),
   connects : Array(Connect),
   functions : Array(Method),
+  subscription : String,
   description : String,
   state : Maybe(State),
   uses : Array(Use),

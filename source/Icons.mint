@@ -1,5 +1,6 @@
-store Icons {
-  get package : Html {
+/* Module for the icons. */
+module Icons {
+  fun package : Html {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"

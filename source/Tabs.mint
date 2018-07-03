@@ -70,7 +70,7 @@ component Tabs {
           active={page == Page::Package}
           link={"/" + documentation.name}
           title={documentation.name}
-          icon={Icons.package}
+          icon={Icons.package()}
           color="#666"/>
       </If>
 

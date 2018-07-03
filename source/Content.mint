@@ -10,6 +10,7 @@ module Content {
       connects = item.connects,
       uses = item.providers,
       state = item.state,
+      subscription = "",
       name = item.name,
       options = [],
       fields = []
@@ -23,6 +24,7 @@ module Content {
       state = Maybe.nothing(),
       computedProperties = [],
       fields = item.fields,
+      subscription = "",
       name = item.name,
       properties = [],
       functions = [],
@@ -39,6 +41,7 @@ module Content {
       state = Maybe.nothing(),
       computedProperties = [],
       options = item.options,
+      subscription = "",
       name = item.name,
       properties = [],
       functions = [],
@@ -52,6 +55,7 @@ module Content {
   fun fromProvider (item : Provider) : Content {
     {
       description = Maybe.withDefault("", item.description),
+      subscription = item.subscription,
       functions = item.functions,
       computedProperties = [],
       state = Maybe.nothing(),
@@ -72,6 +76,7 @@ module Content {
       properties = item.properties,
       functions = item.functions,
       state = Maybe.nothing(),
+      subscription = "",
       name = item.name,
       connects = [],
       options = [],
@@ -87,6 +92,7 @@ module Content {
       functions = item.functions,
       state = Maybe.nothing(),
       computedProperties = [],
+      subscription = "",
       name = item.name,
       properties = [],
       connects = [],
@@ -101,6 +107,7 @@ module Content {
     {
       state = Maybe.nothing(),
       computedProperties = [],
+      subscription = "",
       description = "",
       properties = [],
       functions = [],

@@ -9,9 +9,9 @@ component EntityTab {
   fun render : Html {
     <Tab
       link={"/" + documentation.name + "/" + Type.path(of)}
+      active={of == tab && page == Page::Entity}
       title={Type.title(of)}
       color={Type.color(of)}
-      icon={Type.icon(of)}
-      active={of == tab && page == Page::Entity}/>
+      icon={Type.icon(of)}/>
   }
 }

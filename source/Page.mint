@@ -37,6 +37,13 @@ component Page {
     opacity: 0.6;
   }
 
+  style subscription {
+    font-family: Source Code Pro;
+    margin-top: 15px;
+    font-size: 18px;
+    color: #2e894e;
+  }
+
   /* Renders the components. */
   fun render : Html {
     <div::base>
@@ -67,6 +74,16 @@ component Page {
           <{ state }>
         </div>
       </If>
+
+      <Unless condition={String.isEmpty(selected.subscription)}>
+        <div::section>
+          <{ "Subscription" }>
+        </div>
+
+        <div::subscription>
+          <{ selected.subscription }>
+        </div>
+      </Unless>
 
       <Unless condition={Array.isEmpty(uses)}>
         <div::section>

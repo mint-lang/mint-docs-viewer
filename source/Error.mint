@@ -14,6 +14,11 @@ component Error {
     color: #444;
   }
 
+  style icon {
+    margin-bottom: 30px;
+    fill: currentColor;
+  }
+
   /* Returns the warning icon. */
   get warning : Html {
     <svg::icon
@@ -34,11 +39,6 @@ component Error {
         }/>
 
     </svg>
-  }
-
-  style icon {
-    margin-bottom: 30px;
-    fill: currentColor;
   }
 
   /* Renders the component. */

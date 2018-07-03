@@ -46,7 +46,7 @@ component Dashboard {
       |> Array.map(
         \name : String =>
           <a::package href={"/" + name}>
-            <{ Icons.package }>
+            <{ Icons.package() }>
             <{ name }>
           </a>)
   }
