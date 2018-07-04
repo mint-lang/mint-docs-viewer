@@ -2,6 +2,7 @@
   "name": "mint-docs-viewer",
   "application": {
     "head": "assets/head.html",
+    "icon": "assets/icon.png",
     "title": "Documentation"
   },
   "source-directories": [

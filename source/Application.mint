@@ -23,7 +23,7 @@ store Application {
     if (status == Status::Initial) {
       do {
         response =
-          Http.get("http://localhost:3002/_/documentation.json")
+          Http.get("http://localhost:3002/documentation.json")
           |> Http.send()
 
         json =
