@@ -125,7 +125,7 @@ store Application {
             entity
             |> Maybe.map(
               \name : String => Array.find(\item : Content => item.name == name, items))
-            |> Maybe.Extra.flatten()
+            |> Maybe.flatten()
             |> Maybe.toResult("Could not find entity!")
 
           /* If there is a selected entity show it. */
@@ -164,84 +164,5 @@ store Application {
     } catch String => error {
       Window.navigate("/")
     }
-  }
-}
-
-module Maybe.Extra {
-  fun flatten (maybe : Maybe(Maybe(a))) : Maybe(a) {
-    `
-    (() => {
-      if (maybe instanceof Just) {
-        return maybe.value
-      } else {
-        return maybe
-      }
-    })()
-    `
-  }
-
-  fun oneOf (array : Array(Maybe(a))) : Maybe(a) {
-    array
-    |> Array.find(\item : Maybe(a) => Maybe.isJust(item))
-    |> flatten()
-  }
-}
-
-module Array.Extra {
-  fun concat (array1 : Array(a), array2 : Array(a)) : Array(a) {
-    `array1.concat(array2)`
-  }
-
-  fun reduce (memo : memo, accumulator : Function(item, memo, memo), array : Array(item)) : memo {
-    `
-    (() => {
-      array.reduce((acc, item) => accumulator(item, acc), memo)
-      return memo
-    })()
-    `
-  }
-}
-
-module Map {
-  fun empty : Map(x, z) {
-    `new Map()`
-  }
-
-  fun set (key : x, value : z, map : Map(x, z)) : Map(x, z) {
-    `
-    (() => {
-      map.set(key, value)
-      return map
-    })()
-    `
-  }
-
-  fun get (key : x, map : Map(x, z)) : Maybe(z) {
-    `
-    (() => {
-      if (map.has(key)) {
-        return new Just(map.get(key))
-      } else {
-        return new Nothing()
-      }
-    })()
-    `
-  }
-
-  fun merge (map1 : Map(x, z), map2 : Map(x, z)) : Map(x, z) {
-    `
-    (() => {
-      const map = new Map()
-
-      for (let item of map1) {
-        map.set(item[0], item[1])
-      }
-
-      for (let item of map2) {
-        map.set(item[0], item[1])
-      }
-      return map
-    })()
-    `
   }
 }
