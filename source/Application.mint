@@ -85,6 +85,7 @@ store Application {
         }
 
       Window.setScrollTop(0)
+
       /* If we could not the package. */
     } catch String => error {
       do {
@@ -141,6 +142,7 @@ store Application {
             }
 
           Window.setScrollTop(0)
+
           /* If there is not try to navigate to the first item. */
         } catch String => error {
           do {
