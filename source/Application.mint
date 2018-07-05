@@ -61,6 +61,8 @@ store Application {
           selected = Content.empty(),
           page = Page::Dashboard
         }
+
+      Window.setScrollTop(0)
     }
   }
 
@@ -82,6 +84,7 @@ store Application {
           page = Page::Package
         }
 
+      Window.setScrollTop(0)
       /* If we could not the package. */
     } catch String => error {
       do {
@@ -137,6 +140,7 @@ store Application {
               tab = tab
             }
 
+          Window.setScrollTop(0)
           /* If there is not try to navigate to the first item. */
         } catch String => error {
           do {
