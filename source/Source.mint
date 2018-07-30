@@ -1,11 +1,7 @@
-/* Represents the state of a source panel. */
-record Source.State {
-  shown : Bool
-}
-
 /* Component for rendering the source code of entities. */
 component Source {
-  state : Source.State { shown = false }
+  /* Whether or not the source is shown. */
+  state shown : Bool = false
 
   /* The code to render. */
   property code : String = ""
@@ -54,7 +50,7 @@ component Source {
 
   /* The text to show based on the state. */
   get text : String {
-    if (state.shown) {
+    if (shown) {
       "Hide source "
     } else {
       "Show source"
@@ -63,7 +59,7 @@ component Source {
 
   /* The value for the transform property, it is used by the icon style. */
   get transform : String {
-    if (state.shown) {
+    if (shown) {
       "rotate(90deg)"
     } else {
       ""
@@ -72,7 +68,7 @@ component Source {
 
   /* Handles the click event, and toggles the state. */
   fun toggle (event : Html.Event) : Void {
-    next { state | shown = !state.shown }
+    next { shown = !shown }
   }
 
   /* Renders the component. */
@@ -86,7 +82,7 @@ component Source {
         </div>
       </div>
 
-      <If condition={state.shown}>
+      <If condition={shown}>
         <div::code>
           <Pre code={code}/>
         </div>

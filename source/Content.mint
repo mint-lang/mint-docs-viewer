@@ -9,7 +9,7 @@ module Content {
       functions = item.functions,
       connects = item.connects,
       uses = item.providers,
-      state = item.state,
+      states = item.states,
       subscription = "",
       name = item.name,
       options = [],
@@ -21,7 +21,6 @@ module Content {
   fun fromRecord (item : Record) : Content {
     {
       description = Maybe.withDefault("", item.description),
-      state = Maybe.nothing(),
       computedProperties = [],
       fields = item.fields,
       subscription = "",
@@ -30,6 +29,7 @@ module Content {
       functions = [],
       connects = [],
       options = [],
+      states = [],
       uses = []
     }
   }
@@ -38,7 +38,6 @@ module Content {
   fun fromEnum (item : Enum) : Content {
     {
       description = Maybe.withDefault("", item.description),
-      state = Maybe.nothing(),
       computedProperties = [],
       options = item.options,
       subscription = "",
@@ -47,6 +46,7 @@ module Content {
       functions = [],
       connects = [],
       fields = [],
+      states = [],
       uses = []
     }
   }
@@ -58,12 +58,12 @@ module Content {
       subscription = item.subscription,
       functions = item.functions,
       computedProperties = [],
-      state = Maybe.nothing(),
       name = item.name,
       properties = [],
       connects = [],
       options = [],
       fields = [],
+      states = [],
       uses = []
     }
   }
@@ -73,11 +73,11 @@ module Content {
     {
       description = Maybe.withDefault("", item.description),
       computedProperties = item.computedProperties,
-      properties = item.properties,
       functions = item.functions,
-      state = Maybe.nothing(),
+      states = item.states,
       subscription = "",
       name = item.name,
+      properties = [],
       connects = [],
       options = [],
       fields = [],
@@ -90,13 +90,13 @@ module Content {
     {
       description = Maybe.withDefault("", item.description),
       functions = item.functions,
-      state = Maybe.nothing(),
       computedProperties = [],
       subscription = "",
       name = item.name,
       properties = [],
       connects = [],
       options = [],
+      states = [],
       fields = [],
       uses = []
     }
@@ -105,7 +105,6 @@ module Content {
   /* Creates a new empty `Content`. */
   fun empty : Content {
     {
-      state = Maybe.nothing(),
       computedProperties = [],
       subscription = "",
       description = "",
@@ -114,6 +113,7 @@ module Content {
       connects = [],
       options = [],
       fields = [],
+      states = [],
       uses = [],
       name = ""
     }

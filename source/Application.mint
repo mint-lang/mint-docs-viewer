@@ -1,22 +1,22 @@
 /* The main store of the application. */
 store Application {
   /* The selected entity. */
-  property selected : Content = Content.empty()
+  state selected : Content = Content.empty()
 
   /* The status of the page. */
-  property status : Status = Status::Initial
+  state status : Status = Status::Initial
 
   /* The selected tab. */
-  property tab : Type = Type::Component
+  state tab : Type = Type::Component
 
   /* All documentations of the packages. */
-  property documentations : Array(Documentation) = []
+  state documentations : Array(Documentation) = []
 
   /* The selected packages documentation. */
-  property documentation : Documentation = Documentation.empty()
+  state documentation : Documentation = Documentation.empty()
 
   /* The current page. */
-  property page : Page = Page::Dashboard
+  state page : Page = Page::Dashboard
 
   /* Loads the documentation. */
   fun load : Void {
@@ -34,16 +34,18 @@ store Application {
           decode json as Root
 
         next
-          { state |
-            documentations = root.packages,
+          { documentations = root.packages,
             status = Status::Ok
           }
       } catch Http.ErrorResponse => error {
-        next { state | status = Status::HttpError }
+        next { status = Status::HttpError }
       } catch String => error {
-        next { state | status = Status::JsonError }
+        next { status = Status::JsonError }
       } catch Object.Error => error {
-        next { state | status = Status::DecodeError }
+        do {
+          Debug.log(Object.Error.toString(error))
+          next { status = Status::DecodeError }
+        }
       }
     } else {
       void
@@ -56,8 +58,7 @@ store Application {
       load()
 
       next
-        { state |
-          documentation = Documentation.empty(),
+        { documentation = Documentation.empty(),
           selected = Content.empty(),
           page = Page::Dashboard
         }
@@ -75,12 +76,11 @@ store Application {
       /* Try to find the package. */
       documentation =
         documentations
-        |> Array.find(\item : Documentation => item.name == name)
+        |> Array.find((item : Documentation) : Bool => { item.name == name })
         |> Maybe.toResult("Could not find package!")
 
       next
-        { state |
-          documentation = documentation,
+        { documentation = documentation,
           page = Page::Package
         }
 
@@ -104,7 +104,7 @@ store Application {
       /* Try to find the package. */
       documentation =
         documentations
-        |> Array.find(\item : Documentation => item.name == packageName)
+        |> Array.find((item : Documentation) :Bool => { item.name == packageName })
         |> Maybe.toResult("Could not find package!")
 
       do {
@@ -128,14 +128,13 @@ store Application {
           selected =
             entity
             |> Maybe.map(
-              \name : String => Array.find(\item : Content => item.name == name, items))
+              (name : String) : Maybe(Content) => { Array.find((item : Content) : Bool => { item.name == name }, items) })
             |> Maybe.flatten()
             |> Maybe.toResult("Could not find entity!")
 
           /* If there is a selected entity show it. */
           next
-            { state |
-              documentation = documentation,
+            { documentation = documentation,
               page = Page::Entity,
               selected = selected,
               tab = tab

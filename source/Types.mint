@@ -1,6 +1,6 @@
 /* Represents a property. */
 record Property {
-  defaultValue : String from "default",
+  defaultValue : String using "default",
   description : Maybe(String),
   name : String,
   type : String
@@ -14,12 +14,6 @@ record ComputedProperty {
   type : String
 }
 
-/* Represents a components state. */
-record State {
-  data : String,
-  type : String
-}
-
 /* Represents a store connection. */
 record Connect {
   keys : Array(String),
@@ -28,13 +22,13 @@ record Connect {
 
 /* Represents a component. */
 record Component {
-  computedProperties : Array(ComputedProperty) from "computed-properties",
+  computedProperties : Array(ComputedProperty) using "computed-properties",
+  states : Array(Property) using "states",
   properties : Array(Property),
   description : Maybe(String),
   connects : Array(Connect),
   functions : Array(Method),
   providers : Array(Use),
-  state : Maybe(State),
   name : String
 }
 
@@ -47,8 +41,8 @@ record Use {
 
 /* Represents a store. */
 record Store {
-  computedProperties : Array(ComputedProperty) from "computed-properties",
-  properties : Array(Property),
+  computedProperties : Array(ComputedProperty) using "computed-properties",
+  states : Array(Property) using "states",
   description : Maybe(String),
   functions : Array(Method),
   name : String
@@ -92,9 +86,9 @@ record Content {
   options : Array(EnumOption),
   connects : Array(Connect),
   functions : Array(Method),
+  states : Array(Property),
   subscription : String,
   description : String,
-  state : Maybe(State),
   uses : Array(Use),
   name : String
 }

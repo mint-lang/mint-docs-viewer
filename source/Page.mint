@@ -65,15 +65,15 @@ component Page {
         </div>
       </Unless>
 
-      <If condition={Maybe.isJust(selected.state)}>
+      <Unless condition={Array.isEmpty(states)}>
         <div::section>
-          <{ "State" }>
+          <{ "States" }>
         </div>
 
         <div>
-          <{ state }>
+          <{ states }>
         </div>
-      </If>
+      </Unless>
 
       <Unless condition={String.isEmpty(selected.subscription)}>
         <div::section>
@@ -149,78 +149,88 @@ component Page {
     computedProperties =
       selected.computedProperties
       |> Array.map(
-        \property : ComputedProperty =>
+        (property : ComputedProperty) : Html => {
           <Entity
             key={selected.name + property.name}
             description={property.description}
             source={property.source}
             name={property.name}
-            type={property.type}/>)
+            type={property.type}/>
+        })
 
     properties =
       selected.properties
       |> Array.map(
-        \property : Property =>
+        (property : Property) : Html => {
           <Entity
             key={selected.name + property.name}
             defaultValue={property.defaultValue}
             description={property.description}
             name={property.name}
-            type={property.type}/>)
+            type={property.type}/>
+        })
 
     methods =
       selected.functions
       |> Array.map(
-        \method : Method =>
+        (method : Method) : Html => {
           <Entity
             key={selected.name + method.name}
             description={method.description}
             arguments={method.arguments}
             source={method.source}
             name={method.name}
-            type={method.type}/>)
+            type={method.type}/>
+        })
 
     connects =
       selected.connects
       |> Array.map(
-        \item : Connect =>
+        (item : Connect) : Html => {
           <Connection
             store={item.store}
-            keys={item.keys}/>)
+            keys={item.keys}/>
+        })
 
     fields =
       selected.fields
       |> Array.map(
-        \item : RecordField =>
+        (item : RecordField) : Html => {
           <Field
             mapping={item.mapping}
             type={item.type}
-            name={item.key}/>)
+            name={item.key}/>
+        })
 
-    state =
-      selected.state
-      |> Maybe.map(
-        \item : State =>
-          <State
-            type={item.type}
-            data={item.data}/>)
-      |> Maybe.withDefault(Html.empty())
+    states =
+      selected.states
+      |> Array.map(
+        (item : Property) : Html => {
+          <Entity
+            key={selected.name + item.name}
+            defaultValue={item.defaultValue}
+            description={item.description}
+            name={item.name}
+            type={item.type}/>
+        })
 
     options =
       selected.options
       |> Array.map(
-        \item : EnumOption =>
+        (item : EnumOption) : Html => {
           <Option
             description={item.description}
-            name={item.name}/>)
+            name={item.name}/>
+        })
 
     uses =
       selected.uses
       |> Array.map(
-        \item : Use =>
+        (item : Use) : Html => {
           <Use
             condition={item.condition}
             provider={item.provider}
-            data={item.data}/>)
+            data={item.data}/>
+        })
   }
 }

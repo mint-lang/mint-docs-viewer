@@ -43,10 +43,11 @@ component Package {
     dependencies =
       documentation.dependencies
       |> Array.map(
-        \item : Dependency =>
+        (item : Dependency) : Html => {
           <Dependency
             constraint={item.constraint}
             repository={item.repository}
-            name={item.name}/>)
+            name={item.name}/>
+        })
   }
 }

@@ -3,8 +3,8 @@ component State {
   /* The type of the state. */
   property type : String = ""
 
-  /* The initial state value. */
-  property data : String = ""
+  /* The initial value. */
+  property defaultValue : String = ""
 
   style base {
     font-family: Source Code Pro;
@@ -47,7 +47,7 @@ component State {
       </div>
 
       <div::code>
-        <Pre code={data}/>
+        <Pre code={defaultValue}/>
       </div>
     </div>
   }

@@ -42,12 +42,13 @@ component Dashboard {
   } where {
     packages =
       documentations
-      |> Array.map(\item : Documentation => item.name)
+      |> Array.map((item : Documentation) : String => { item.name })
       |> Array.map(
-        \name : String =>
+        (name : String) : Html => {
           <a::package href={"/" + name}>
             <{ Icons.package() }>
             <{ name }>
-          </a>)
+          </a>
+        })
   }
 }

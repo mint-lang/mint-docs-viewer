@@ -20,50 +20,56 @@ component Sidebar {
       Type::Component =>
         documentation.components
         |> Array.map(
-          \item : Component =>
+          (item : Component) : Html => {
             <Sidebar.Item
               type={Type::Component}
-              text={item.name}/>)
+              text={item.name}/>
+          })
 
       Type::Provider =>
         documentation.providers
         |> Array.map(
-          \item : Provider =>
+          (item : Provider) : Html => {
             <Sidebar.Item
               type={Type::Provider}
-              text={item.name}/>)
+              text={item.name}/>
+          })
 
       Type::Store =>
         documentation.stores
         |> Array.map(
-          \item : Store =>
+          (item : Store) : Html => {
             <Sidebar.Item
               type={Type::Store}
-              text={item.name}/>)
+              text={item.name}/>
+          })
 
       Type::Record =>
         documentation.records
         |> Array.map(
-          \item : Record =>
+          (item : Record) : Html => {
             <Sidebar.Item
               type={Type::Record}
-              text={item.name}/>)
+              text={item.name}/>
+          })
 
       Type::Module =>
         documentation.modules
         |> Array.map(
-          \item : Module =>
+          (item : Module) : Html => {
             <Sidebar.Item
               type={Type::Module}
-              text={item.name}/>)
+              text={item.name}/>
+          })
 
       Type::Enum =>
         documentation.enums
         |> Array.map(
-          \item : Enum =>
+          (item : Enum) : Html => {
             <Sidebar.Item
               type={Type::Enum}
-              text={item.name}/>)
+              text={item.name}/>
+          })
     }
   }
 
