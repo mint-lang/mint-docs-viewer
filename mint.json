@@ -6,7 +6,12 @@
     "title": "Documentation"
   },
   "source-directories": [
-    "../mint-core/source",
     "source"
-  ]
+  ],
+  "dependencies": {
+    "mint-core": {
+      "repository": "https://github.com/mint-lang/core",
+      "constraint": "0.3.0 <= v < 1.0.0"
+    }
+  }
 }
