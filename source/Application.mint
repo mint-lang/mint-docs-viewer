@@ -19,9 +19,9 @@ store Application {
   state page : Page = Page::Dashboard
 
   /* Loads the documentation. */
-  fun load : Void {
+  fun load : Promise(Never, Void) {
     if (status == Status::Initial) {
-      do {
+      sequence {
         response =
           Http.get("http://localhost:3002/documentation.json")
           |> Http.send()
@@ -34,7 +34,8 @@ store Application {
           decode json as Root
 
         next
-          { documentations = root.packages,
+          {
+            documentations = root.packages,
             status = Status::Ok
           }
       } catch Http.ErrorResponse => error {
@@ -42,23 +43,21 @@ store Application {
       } catch String => error {
         next { status = Status::JsonError }
       } catch Object.Error => error {
-        do {
-          Debug.log(Object.Error.toString(error))
-          next { status = Status::DecodeError }
-        }
+        next { status = Status::DecodeError }
       }
     } else {
-      void
+      Promise.never()
     }
   }
 
   /* Navigates to the dashboard. */
-  fun dashboard : Void {
-    do {
+  fun dashboard : Promise(Never, Void) {
+    sequence {
       load()
 
       next
-        { documentation = Documentation.empty(),
+        {
+          documentation = Documentation.empty(),
           selected = Content.empty(),
           page = Page::Dashboard
         }
@@ -68,19 +67,21 @@ store Application {
   }
 
   /* Routes to the given package. */
-  fun routePackage (name : String) : Void {
-    do {
+  fun routePackage (name : String) : Promise(Never, Void) {
+    sequence {
       /* Load the documentation.json. */
       load()
 
       /* Try to find the package. */
-      documentation =
+      nextDocumentation =
         documentations
-        |> Array.find((item : Documentation) : Bool => { item.name == name })
+        |> Array.find(
+          (item : Documentation) : Bool => { item.name == name })
         |> Maybe.toResult("Could not find package!")
 
       next
-        { documentation = documentation,
+        {
+          documentation = nextDocumentation,
           page = Page::Package
         }
 
@@ -88,63 +89,70 @@ store Application {
 
       /* If we could not the package. */
     } catch String => error {
-      do {
-        Debug.log(error)
-        Window.navigate("/")
-      }
+      Window.navigate("/")
     }
   }
 
   /* Handles the routing logic of a tab and enitity. */
-  fun route (packageName : String, tabName : String, entity : Maybe(String)) : Void {
-    do {
+  fun route (
+    packageName : String,
+    tabName : String,
+    entity : Maybe(String)
+  ) : Promise(Never, Void) {
+    sequence {
       /* Load the documentation.json. */
       load()
 
       /* Try to find the package. */
-      documentation =
+      nextDocumentation =
         documentations
-        |> Array.find((item : Documentation) :Bool => { item.name == packageName })
+        |> Array.find(
+          (item : Documentation) : Bool => { item.name == packageName })
         |> Maybe.toResult("Could not find package!")
 
-      do {
+      sequence {
         /* Get the type from string. */
-        tab =
+        nextTab =
           Type.fromString(tabName)
 
         /* Get the converted items from based on the type. */
         items =
-          case (tab) {
-            Type::Component => Array.map(Content.fromComponent, documentation.components)
-            Type::Provider => Array.map(Content.fromProvider, documentation.providers)
-            Type::Record => Array.map(Content.fromRecord, documentation.records)
-            Type::Module => Array.map(Content.fromModule, documentation.modules)
-            Type::Store => Array.map(Content.fromStore, documentation.stores)
-            Type::Enum => Array.map(Content.fromEnum, documentation.enums)
+          case (nextTab) {
+            Type::Component => Array.map(Content.fromComponent, nextDocumentation.components)
+            Type::Provider => Array.map(Content.fromProvider, nextDocumentation.providers)
+            Type::Record => Array.map(Content.fromRecord, nextDocumentation.records)
+            Type::Module => Array.map(Content.fromModule, nextDocumentation.modules)
+            Type::Store => Array.map(Content.fromStore, nextDocumentation.stores)
+            Type::Enum => Array.map(Content.fromEnum, nextDocumentation.enums)
           }
 
         /* Try to show the selected entity. */
-        do {
-          selected =
+        sequence {
+          nextSelected =
             entity
             |> Maybe.map(
-              (name : String) : Maybe(Content) => { Array.find((item : Content) : Bool => { item.name == name }, items) })
+              (name : String) : Maybe(Content) => {
+                Array.find(
+                  (item : Content) : Bool => { item.name == name },
+                  items)
+              })
             |> Maybe.flatten()
             |> Maybe.toResult("Could not find entity!")
 
           /* If there is a selected entity show it. */
           next
-            { documentation = documentation,
+            {
+              documentation = nextDocumentation,
+              selected = nextSelected,
               page = Page::Entity,
-              selected = selected,
-              tab = tab
+              tab = nextTab
             }
 
           Window.setScrollTop(0)
 
           /* If there is not try to navigate to the first item. */
-        } catch String => error {
-          do {
+        } catch {
+          sequence {
             first =
               items
               |> Array.first()
@@ -152,21 +160,21 @@ store Application {
 
             /* If there is a first item navigate to it. */
             Window.navigate(
-              "/" + documentation.name + "/" + Type.path(tab) + "/" + first.name)
+              "/" + nextDocumentation.name + "/" + Type.path(nextTab) + "/" + first.name)
 
             /* If there is not navigate to root. */
-          } catch String => error {
-            Window.navigate("/" + documentation.name)
+          } catch {
+            Window.navigate("/" + nextDocumentation.name)
           }
         }
 
         /* If we could not find a proper type. */
-      } catch String => error {
-        Window.navigate("/" + documentation.name)
+      } catch {
+        Window.navigate("/" + nextDocumentation.name)
       }
 
       /* If we could not the package. */
-    } catch String => error {
+    } catch {
       Window.navigate("/")
     }
   }

@@ -20,6 +20,7 @@ component Page {
     border-bottom: 2px solid #EEE;
     padding-bottom: 10px;
     font-size: 30px;
+    display: flex;
   }
 
   style description {
@@ -44,11 +45,32 @@ component Page {
     color: #2e894e;
   }
 
+  style parameters {
+    font-weight: normal;
+    color: #2e894e;
+
+    &::before {
+      content: "(";
+      color: #333;
+    }
+
+    &::after {
+      content: ")";
+      color: #333;
+    }
+  }
+
   /* Renders the components. */
   fun render : Html {
     <div::base>
       <div::title>
         <{ selected.name }>
+
+        <Unless condition={Array.isEmpty(selected.parameters)}>
+          <div::parameters>
+            <{ String.join(", ", selected.parameters) }>
+          </div>
+        </Unless>
       </div>
 
       <div::description>
@@ -220,6 +242,7 @@ component Page {
         (item : EnumOption) : Html => {
           <Option
             description={item.description}
+            parameters={item.parameters}
             name={item.name}/>
         })
 

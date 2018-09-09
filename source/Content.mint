@@ -12,6 +12,7 @@ module Content {
       states = item.states,
       subscription = "",
       name = item.name,
+      parameters = [],
       options = [],
       fields = []
     }
@@ -26,6 +27,7 @@ module Content {
       subscription = "",
       name = item.name,
       properties = [],
+      parameters = [],
       functions = [],
       connects = [],
       options = [],
@@ -38,6 +40,7 @@ module Content {
   fun fromEnum (item : Enum) : Content {
     {
       description = Maybe.withDefault("", item.description),
+      parameters = item.parameters,
       computedProperties = [],
       options = item.options,
       subscription = "",
@@ -59,6 +62,7 @@ module Content {
       functions = item.functions,
       computedProperties = [],
       name = item.name,
+      parameters = [],
       properties = [],
       connects = [],
       options = [],
@@ -77,6 +81,7 @@ module Content {
       states = item.states,
       subscription = "",
       name = item.name,
+      parameters = [],
       properties = [],
       connects = [],
       options = [],
@@ -93,6 +98,7 @@ module Content {
       computedProperties = [],
       subscription = "",
       name = item.name,
+      parameters = [],
       properties = [],
       connects = [],
       options = [],
@@ -108,6 +114,7 @@ module Content {
       computedProperties = [],
       subscription = "",
       description = "",
+      parameters = [],
       properties = [],
       functions = [],
       connects = [],

@@ -84,6 +84,7 @@ record Content {
   properties : Array(Property),
   fields : Array(RecordField),
   options : Array(EnumOption),
+  parameters : Array(String),
   connects : Array(Connect),
   functions : Array(Method),
   states : Array(Property),
@@ -135,12 +136,14 @@ record Record {
 record Enum {
   description : Maybe(String),
   options : Array(EnumOption),
+  parameters : Array(String),
   name : String
 }
 
 /* Represents an enum option. */
 record EnumOption {
   description : Maybe(String),
+  parameters : Array(String),
   name : String
 }
 
