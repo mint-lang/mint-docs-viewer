@@ -44,7 +44,7 @@ component Connection {
       </div>
 
       <span>
-        <{ " exposing {" }>
+        " exposing {"
       </span>
 
       <div::keys>
@@ -52,7 +52,7 @@ component Connection {
       </div>
 
       <div>
-        <{ "}" }>
+        "}"
       </div>
     </div>
   }

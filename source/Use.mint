@@ -45,7 +45,7 @@ component Use {
 
       <If condition={Maybe.isJust(condition)}>
         <div::when>
-          <{ "only when:" }>
+          "only when:"
         </div>
 
         <div::code>

@@ -79,7 +79,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(connects)}>
         <div::section>
-          <{ "Connected Stores" }>
+          "Connected Stores"
         </div>
 
         <div>
@@ -89,7 +89,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(states)}>
         <div::section>
-          <{ "States" }>
+          "States"
         </div>
 
         <div>
@@ -99,7 +99,7 @@ component Page {
 
       <Unless condition={String.isEmpty(selected.subscription)}>
         <div::section>
-          <{ "Subscription" }>
+          "Subscription"
         </div>
 
         <div::subscription>
@@ -109,7 +109,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(uses)}>
         <div::section>
-          <{ "Using Providers" }>
+          "Using Providers"
         </div>
 
         <div>
@@ -119,7 +119,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(fields)}>
         <div::section>
-          <{ "Fields" }>
+          "Fields"
         </div>
 
         <div>
@@ -129,7 +129,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(options)}>
         <div::section>
-          <{ "Options" }>
+          "Options"
         </div>
 
         <div>
@@ -139,7 +139,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(properties)}>
         <div::section>
-          <{ "Properties" }>
+          "Properties"
         </div>
 
         <div>
@@ -149,7 +149,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(computedProperties)}>
         <div::section>
-          <{ "Computed Properties" }>
+          "Computed Properties"
         </div>
 
         <div>
@@ -159,7 +159,7 @@ component Page {
 
       <Unless condition={Array.isEmpty(methods)}>
         <div::section>
-          <{ "Functions" }>
+          "Functions"
         </div>
 
         <div>
@@ -171,7 +171,7 @@ component Page {
     computedProperties =
       selected.computedProperties
       |> Array.map(
-        (property : ComputedProperty) : Html => {
+        (property : ComputedProperty) : Html {
           <Entity
             key={selected.name + property.name}
             description={property.description}
@@ -183,7 +183,7 @@ component Page {
     properties =
       selected.properties
       |> Array.map(
-        (property : Property) : Html => {
+        (property : Property) : Html {
           <Entity
             key={selected.name + property.name}
             defaultValue={property.defaultValue}
@@ -195,7 +195,7 @@ component Page {
     methods =
       selected.functions
       |> Array.map(
-        (method : Method) : Html => {
+        (method : Method) : Html {
           <Entity
             key={selected.name + method.name}
             description={method.description}
@@ -208,7 +208,7 @@ component Page {
     connects =
       selected.connects
       |> Array.map(
-        (item : Connect) : Html => {
+        (item : Connect) : Html {
           <Connection
             store={item.store}
             keys={item.keys}/>
@@ -217,7 +217,7 @@ component Page {
     fields =
       selected.fields
       |> Array.map(
-        (item : RecordField) : Html => {
+        (item : RecordField) : Html {
           <Field
             mapping={item.mapping}
             type={item.type}
@@ -227,7 +227,7 @@ component Page {
     states =
       selected.states
       |> Array.map(
-        (item : Property) : Html => {
+        (item : Property) : Html {
           <Entity
             key={selected.name + item.name}
             defaultValue={item.defaultValue}
@@ -239,7 +239,7 @@ component Page {
     options =
       selected.options
       |> Array.map(
-        (item : EnumOption) : Html => {
+        (item : EnumOption) : Html {
           <Option
             description={item.description}
             parameters={item.parameters}
@@ -249,7 +249,7 @@ component Page {
     uses =
       selected.uses
       |> Array.map(
-        (item : Use) : Html => {
+        (item : Use) : Html {
           <Use
             condition={item.condition}
             provider={item.provider}

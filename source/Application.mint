@@ -76,7 +76,7 @@ store Application {
       nextDocumentation =
         documentations
         |> Array.find(
-          (item : Documentation) : Bool => { item.name == name })
+          (item : Documentation) : Bool { item.name == name })
         |> Maybe.toResult("Could not find package!")
 
       next
@@ -107,7 +107,7 @@ store Application {
       nextDocumentation =
         documentations
         |> Array.find(
-          (item : Documentation) : Bool => { item.name == packageName })
+          (item : Documentation) : Bool { item.name == packageName })
         |> Maybe.toResult("Could not find package!")
 
       sequence {
@@ -131,9 +131,9 @@ store Application {
           nextSelected =
             entity
             |> Maybe.map(
-              (name : String) : Maybe(Content) => {
+              (name : String) : Maybe(Content) {
                 Array.find(
-                  (item : Content) : Bool => { item.name == name },
+                  (item : Content) : Bool { item.name == name },
                   items)
               })
             |> Maybe.flatten()

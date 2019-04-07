@@ -31,7 +31,7 @@ component Package {
 
       <Unless condition={Array.isEmpty(dependencies)}>
         <div::subtitle>
-          <{ "Dependencies" }>
+          "Dependencies"
         </div>
 
         <div>
@@ -43,7 +43,7 @@ component Package {
     dependencies =
       documentation.dependencies
       |> Array.map(
-        (item : Dependency) : Html => {
+        (item : Dependency) : Html {
           <Dependency
             constraint={item.constraint}
             repository={item.repository}

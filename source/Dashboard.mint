@@ -32,7 +32,7 @@ component Dashboard {
   fun render : Html {
     <div::base>
       <div::title>
-        <{ "Dashboard" }>
+        "Dashboard"
       </div>
 
       <div>
@@ -42,9 +42,9 @@ component Dashboard {
   } where {
     packages =
       documentations
-      |> Array.map((item : Documentation) : String => { item.name })
+      |> Array.map((item : Documentation) : String { item.name })
       |> Array.map(
-        (name : String) : Html => {
+        (name : String) : Html {
           <a::package href={"/" + name}>
             <{ Icons.package() }>
             <{ name }>

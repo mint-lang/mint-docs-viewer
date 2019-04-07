@@ -42,7 +42,7 @@ component State {
         <{ type }>
 
         <div::equals>
-          <{ "=" }>
+          "="
         </div>
       </div>
 

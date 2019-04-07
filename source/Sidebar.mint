@@ -20,7 +20,7 @@ component Sidebar {
       Type::Component =>
         documentation.components
         |> Array.map(
-          (item : Component) : Html => {
+          (item : Component) : Html {
             <Sidebar.Item
               type={Type::Component}
               text={item.name}/>
@@ -29,7 +29,7 @@ component Sidebar {
       Type::Provider =>
         documentation.providers
         |> Array.map(
-          (item : Provider) : Html => {
+          (item : Provider) : Html {
             <Sidebar.Item
               type={Type::Provider}
               text={item.name}/>
@@ -38,7 +38,7 @@ component Sidebar {
       Type::Store =>
         documentation.stores
         |> Array.map(
-          (item : Store) : Html => {
+          (item : Store) : Html {
             <Sidebar.Item
               type={Type::Store}
               text={item.name}/>
@@ -47,7 +47,7 @@ component Sidebar {
       Type::Record =>
         documentation.records
         |> Array.map(
-          (item : Record) : Html => {
+          (item : Record) : Html {
             <Sidebar.Item
               type={Type::Record}
               text={item.name}/>
@@ -56,7 +56,7 @@ component Sidebar {
       Type::Module =>
         documentation.modules
         |> Array.map(
-          (item : Module) : Html => {
+          (item : Module) : Html {
             <Sidebar.Item
               type={Type::Module}
               text={item.name}/>
@@ -65,7 +65,7 @@ component Sidebar {
       Type::Enum =>
         documentation.enums
         |> Array.map(
-          (item : Enum) : Html => {
+          (item : Enum) : Html {
             <Sidebar.Item
               type={Type::Enum}
               text={item.name}/>
