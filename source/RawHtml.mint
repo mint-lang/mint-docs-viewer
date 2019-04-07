@@ -30,6 +30,6 @@ component RawHtml {
 
   /* Renders the component. */
   fun render : Html {
-    <div::base dangerouslySetInnerHTML={`{__html: this.content}`}/>
+    <div::base dangerouslySetInnerHTML={`{__html: #{content}}`}/>
   }
 }
