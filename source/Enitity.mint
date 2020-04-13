@@ -46,7 +46,7 @@ component Entity {
   style base {
     padding: 15px 0;
 
-    & + * {
+    + * {
       border-top: 1px dashed #DDD;
     }
   }
@@ -66,7 +66,7 @@ component Entity {
   }
 
   style argument {
-    & + *:before {
+    + *:before {
       content: ", ";
     }
   }

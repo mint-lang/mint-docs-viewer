@@ -4,21 +4,21 @@ component RawHtml {
   property content : String = ""
 
   style base {
-    & *:first-child {
+    *:first-child {
       margin-top: 0;
     }
 
-    & *:last-child {
+    *:last-child {
       margin-bottom: 0;
     }
 
-    & li {
+    li {
       line-height: 2;
     }
 
-    & pre,
-    & p code,
-    & li code {
+    pre,
+    p code,
+    li code {
       font-family: Source Code Pro;
       background: #F2F2F2;
       border-radius: 2px;

@@ -3,7 +3,7 @@ component Tabs {
   connect Application exposing { documentations, documentation, tab, page }
 
   style base {
-    border-bottom: 5px solid {color};
+    border-bottom: 5px solid #{color};
     font-weight: bold;
     background: #333;
     display: flex;
