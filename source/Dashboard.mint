@@ -13,7 +13,7 @@ component Dashboard {
     color: #2e894e;
     display: flex;
 
-    & svg {
+    svg {
       fill: currentColor;
       margin-right: 5px;
       height: 20px;

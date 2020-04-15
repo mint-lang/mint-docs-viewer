@@ -26,7 +26,7 @@ component Sidebar.Item {
   }
 
   style badge {
-    background-color: {Type.color(tab)};
+    background-color: #{Type.color(tab)};
     justify-content: center;
     display: inline-flex;
     align-items: center;

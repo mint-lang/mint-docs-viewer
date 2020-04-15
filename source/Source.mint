@@ -23,7 +23,7 @@ component Source {
 
   /* The style for the chevron icon. */
   style icon {
-    transform: {transform};
+    transform: #{transform};
     position: relative;
     fill: currentColor;
     margin-right: 5px;

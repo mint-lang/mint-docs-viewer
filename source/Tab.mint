@@ -16,7 +16,7 @@ component Tab {
   property link : String = ""
 
   style base {
-    background: {background};
+    background: #{background};
     text-decoration: none;
     align-items: center;
     padding: 0 15px;
@@ -26,10 +26,10 @@ component Tab {
     height: 50px;
 
     &:hover {
-      background: {hoverBackground};
+      background: #{hoverBackground};
     }
 
-    & svg {
+    svg {
       filter: drop-shadow(0 1px 0 rgba(0,0,0,0.333));
       fill: currentColor;
       height: 18px;

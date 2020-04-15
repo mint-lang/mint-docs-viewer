@@ -5,7 +5,8 @@
     "icon": "assets/icon.png",
     "title": "Documentation"
   },
-  "source-directories": [
-    "source"
-  ]
+  "source-directories": ["source"],
+  "external": {
+    "stylesheets": ["assets/modern-normalize.min.css"]
+  }
 }
