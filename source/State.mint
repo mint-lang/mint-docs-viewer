@@ -41,9 +41,7 @@ component State {
       <div::type>
         <{ type }>
 
-        <div::equals>
-          "="
-        </div>
+        <div::equals>"="</div>
       </div>
 
       <div::code>

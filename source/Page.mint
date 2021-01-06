@@ -78,9 +78,7 @@ component Page {
       </div>
 
       <Unless condition={Array.isEmpty(connects)}>
-        <div::section>
-          "Connected Stores"
-        </div>
+        <div::section>"Connected Stores"</div>
 
         <div>
           <{ connects }>
@@ -88,9 +86,7 @@ component Page {
       </Unless>
 
       <Unless condition={Array.isEmpty(states)}>
-        <div::section>
-          "States"
-        </div>
+        <div::section>"States"</div>
 
         <div>
           <{ states }>
@@ -98,9 +94,7 @@ component Page {
       </Unless>
 
       <Unless condition={String.isEmpty(selected.subscription)}>
-        <div::section>
-          "Subscription"
-        </div>
+        <div::section>"Subscription"</div>
 
         <div::subscription>
           <{ selected.subscription }>
@@ -108,9 +102,7 @@ component Page {
       </Unless>
 
       <Unless condition={Array.isEmpty(uses)}>
-        <div::section>
-          "Using Providers"
-        </div>
+        <div::section>"Using Providers"</div>
 
         <div>
           <{ uses }>
@@ -118,9 +110,7 @@ component Page {
       </Unless>
 
       <Unless condition={Array.isEmpty(fields)}>
-        <div::section>
-          "Fields"
-        </div>
+        <div::section>"Fields"</div>
 
         <div>
           <{ fields }>
@@ -128,9 +118,7 @@ component Page {
       </Unless>
 
       <Unless condition={Array.isEmpty(options)}>
-        <div::section>
-          "Options"
-        </div>
+        <div::section>"Options"</div>
 
         <div>
           <{ options }>
@@ -138,9 +126,7 @@ component Page {
       </Unless>
 
       <Unless condition={Array.isEmpty(properties)}>
-        <div::section>
-          "Properties"
-        </div>
+        <div::section>"Properties"</div>
 
         <div>
           <{ properties }>
@@ -148,9 +134,7 @@ component Page {
       </Unless>
 
       <Unless condition={Array.isEmpty(computedProperties)}>
-        <div::section>
-          "Computed Properties"
-        </div>
+        <div::section>"Computed Properties"</div>
 
         <div>
           <{ computedProperties }>
@@ -158,9 +142,7 @@ component Page {
       </Unless>
 
       <Unless condition={Array.isEmpty(methods)}>
-        <div::section>
-          "Functions"
-        </div>
+        <div::section>"Functions"</div>
 
         <div>
           <{ methods }>

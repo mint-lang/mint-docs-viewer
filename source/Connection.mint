@@ -43,17 +43,13 @@ component Connection {
         <{ store }>
       </div>
 
-      <span>
-        " exposing {"
-      </span>
+      <span>" exposing {"</span>
 
       <div::keys>
         <{ Array.map(renderKey, keys) }>
       </div>
 
-      <div>
-        "}"
-      </div>
+      <div>"}"</div>
     </div>
   }
 }

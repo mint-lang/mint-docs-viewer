@@ -31,9 +31,7 @@ component Dashboard {
   /* Renders the component. */
   fun render : Html {
     <div::base>
-      <div::title>
-        "Dashboard"
-      </div>
+      <div::title>"Dashboard"</div>
 
       <div>
         <{ packages }>

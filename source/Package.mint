@@ -30,9 +30,7 @@ component Package {
       </div>
 
       <Unless condition={Array.isEmpty(dependencies)}>
-        <div::subtitle>
-          "Dependencies"
-        </div>
+        <div::subtitle>"Dependencies"</div>
 
         <div>
           <{ dependencies }>

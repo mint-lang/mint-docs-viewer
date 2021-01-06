@@ -44,9 +44,7 @@ component Use {
       </div>
 
       <If condition={Maybe.isJust(condition)}>
-        <div::when>
-          "only when:"
-        </div>
+        <div::when>"only when:"</div>
 
         <div::code>
           <Pre code={Maybe.withDefault("", condition)}/>

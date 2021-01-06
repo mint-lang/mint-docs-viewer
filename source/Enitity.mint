@@ -16,7 +16,7 @@ component Entity {
   property name : String = ""
 
   /* The type signature of the enity. */
-  property type : String = ""
+  property type : Maybe(String) = Maybe::Nothing
 
   style definition {
     font-family: Source Code Pro;
@@ -116,9 +116,14 @@ component Entity {
           </div>
         </Unless>
 
-        <div::type>
-          <{ type }>
-        </div>
+        case (type) {
+          Maybe::Just value =>
+            <div::type>
+              <{ value }>
+            </div>
+
+          => <></>
+        }
 
         <Unless condition={String.isEmpty(defaultValue)}>
           <div::default>

@@ -2,16 +2,16 @@
 record Property {
   defaultValue : String using "default",
   description : Maybe(String),
-  name : String,
-  type : String
+  type : Maybe(String),
+  name : String
 }
 
 /* Represents a computed property (get). */
 record ComputedProperty {
   description : Maybe(String),
+  type : Maybe(String),
   source : String,
-  name : String,
-  type : String
+  name : String
 }
 
 /* Represents a store connection. */
@@ -52,9 +52,9 @@ record Store {
 record Method {
   arguments : Array(Argument),
   description : Maybe(String),
+  type : Maybe(String),
   source : String,
-  name : String,
-  type : String
+  name : String
 }
 
 /* Represents a provider. */
