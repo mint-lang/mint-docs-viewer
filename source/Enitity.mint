@@ -117,7 +117,7 @@ component Entity {
         </Unless>
 
         case (type) {
-          Maybe::Just value =>
+          Maybe::Just(value) =>
             <div::type>
               <{ value }>
             </div>
