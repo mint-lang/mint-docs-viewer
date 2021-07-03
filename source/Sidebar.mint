@@ -14,7 +14,7 @@ component Sidebar {
     margin-top: 30px;
   }
 
-  /* Returns the renderd items in the sidebar. */
+  /* Returns the rendered items in the sidebar. */
   get items : Array(Html) {
     case (tab) {
       Type::Component =>

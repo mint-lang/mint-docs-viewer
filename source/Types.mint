@@ -171,13 +171,13 @@ enum Type {
 
 /* Represents the status of the application. */
 enum Status {
-  /* An error occured when trying to decode the `documentation.json` */
+  /* An error occurred when trying to decode the `documentation.json` */
   DecodeError
 
-  /* An error occured when trying to parse the `documentation.json` */
+  /* An error occurred when trying to parse the `documentation.json` */
   HttpError
 
-  /* An error occured when trying to load the `documentation.json` */
+  /* An error occurred when trying to load the `documentation.json` */
   JsonError
 
   /* The initial state */
