@@ -87,7 +87,7 @@ store Application {
 
       Window.setScrollTop(0)
 
-      /* If we could not the package. */
+      /* If we could not find the package. */
     } catch String => error {
       Window.navigate("/")
     }
