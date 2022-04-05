@@ -43,7 +43,10 @@ store Application {
       } catch String => error {
         next { status = Status::JsonError }
       } catch Object.Error => error {
-        next { status = Status::DecodeError }
+        sequence {
+          Debug.log(Object.Error.toString(error))
+          next { status = Status::DecodeError }
+        }
       }
     } else {
       Promise.never()

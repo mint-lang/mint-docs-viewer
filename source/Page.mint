@@ -167,8 +167,8 @@ component Page {
       |> Array.map(
         (property : Property) : Html {
           <Entity
+            defaultValue={property.defaultValue or ""}
             key={selected.name + property.name}
-            defaultValue={property.defaultValue}
             description={property.description}
             name={property.name}
             type={property.type}/>
@@ -211,8 +211,8 @@ component Page {
       |> Array.map(
         (item : Property) : Html {
           <Entity
+            defaultValue={item.defaultValue or ""}
             key={selected.name + item.name}
-            defaultValue={item.defaultValue}
             description={item.description}
             name={item.name}
             type={item.type}/>

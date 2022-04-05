@@ -1,6 +1,6 @@
 /* Represents a property. */
 record Property {
-  defaultValue : String using "default",
+  defaultValue : Maybe(String) using "default",
   description : Maybe(String),
   type : Maybe(String),
   name : String
