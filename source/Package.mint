@@ -24,6 +24,16 @@ component Package {
 
   /* Renders the component. */
   fun render : Html {
+    let dependencies =
+      documentation.dependencies
+      |> Array.map(
+        (item : Dependency) : Html {
+          <Dependency
+            constraint={item.constraint}
+            repository={item.repository}
+            name={item.name}/>
+        })
+
     <div::base>
       <div::title>
         <{ documentation.name }>
@@ -37,15 +47,5 @@ component Package {
         </div>
       </Unless>
     </div>
-  } where {
-    dependencies =
-      documentation.dependencies
-      |> Array.map(
-        (item : Dependency) : Html {
-          <Dependency
-            constraint={item.constraint}
-            repository={item.repository}
-            name={item.name}/>
-        })
   }
 }

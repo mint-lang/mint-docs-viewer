@@ -19,80 +19,69 @@ store Application {
   state page : Page = Page::Dashboard
 
   /* Loads the documentation. */
-  fun load : Promise(Never, Void) {
+  fun load : Promise(Void) {
     if (status == Status::Initial) {
-      sequence {
-        response =
-          Http.get("http://localhost:3002/documentation.json")
-          |> Http.send()
+      case (await Http.send(Http.get("http://localhost:3002/documentation.json"))) {
+        Result::Err => next { status: Status::HttpError }
 
-        json =
-          Json.parse(response.body)
-          |> Maybe.toResult("")
+        Result::Ok(response) =>
+          case (Json.parse(response.body)) {
+            Result::Err => next { status: Status::JsonError }
 
-        root =
-          decode json as Root
+            Result::Ok(json) =>
+              case (decode json as Root) {
+                Result::Err(error) =>
+                  {
+                    Debug.log(Object.Error.toString(error))
+                    next { status: Status::DecodeError }
+                  }
 
-        next
-          {
-            documentations = root.packages,
-            status = Status::Ok
+                Result::Ok(root) =>
+                  next
+                    {
+                      documentations: root.packages,
+                      status: Status::Ok
+                    }
+              }
           }
-      } catch Http.ErrorResponse => error {
-        next { status = Status::HttpError }
-      } catch String => error {
-        next { status = Status::JsonError }
-      } catch Object.Error => error {
-        sequence {
-          Debug.log(Object.Error.toString(error))
-          next { status = Status::DecodeError }
-        }
       }
     } else {
-      Promise.never()
+      next { }
     }
   }
 
   /* Navigates to the dashboard. */
-  fun dashboard : Promise(Never, Void) {
-    sequence {
-      load()
+  fun dashboard : Promise(Void) {
+    await load()
 
-      next
-        {
-          documentation = Documentation.empty(),
-          selected = Content.empty(),
-          page = Page::Dashboard
-        }
+    await next
+      {
+        documentation: Documentation.empty(),
+        selected: Content.empty(),
+        page: Page::Dashboard
+      }
 
-      Window.setScrollTop(0)
-    }
+    Window.setScrollTop(0)
   }
 
   /* Routes to the given package. */
-  fun routePackage (name : String) : Promise(Never, Void) {
-    sequence {
-      /* Load the documentation.json. */
-      load()
+  fun routePackage (name : String) : Promise(Void) {
+    /* Load the documentation.json. */
+    await load()
 
-      /* Try to find the package. */
-      nextDocumentation =
-        documentations
-        |> Array.find(
-          (item : Documentation) : Bool { item.name == name })
-        |> Maybe.toResult("Could not find package!")
+    case (Array.find(documentations, (item : Documentation) : Bool { item.name == name })) {
+      Maybe::Nothing => Window.navigate("/")
 
-      next
+      Maybe::Just(nextDocumentation) =>
         {
-          documentation = nextDocumentation,
-          page = Page::Package
+          next
+            {
+              documentation: nextDocumentation,
+              page: Page::Package
+            }
+
+          Window.setScrollTop(0)
         }
-
-      Window.setScrollTop(0)
-
-      /* If we could not find the package. */
-    } catch String => error {
-      Window.navigate("/")
     }
   }
 
@@ -101,84 +90,65 @@ store Application {
     packageName : String,
     tabName : String,
     entity : Maybe(String)
-  ) : Promise(Never, Void) {
-    sequence {
-      /* Load the documentation.json. */
-      load()
+  ) : Promise(Void) {
+    /* Load the documentation.json. */
+    await load()
 
-      /* Try to find the package. */
-      nextDocumentation =
-        documentations
-        |> Array.find(
-          (item : Documentation) : Bool { item.name == packageName })
-        |> Maybe.toResult("Could not find package!")
+    case (Array.find(documentations, (item : Documentation) : Bool { item.name == packageName })) {
+      Maybe::Nothing => Window.navigate("/")
 
-      sequence {
-        /* Get the type from string. */
-        nextTab =
-          Type.fromString(tabName)
+      Maybe::Just(nextDocumentation) =>
+        case (Type.fromString(tabName)) {
+          Result::Err => Window.navigate("/" + nextDocumentation.name)
 
-        /* Get the converted items from based on the type. */
-        items =
-          case (nextTab) {
-            Type::Component => Array.map(Content.fromComponent, nextDocumentation.components)
-            Type::Provider => Array.map(Content.fromProvider, nextDocumentation.providers)
-            Type::Record => Array.map(Content.fromRecord, nextDocumentation.records)
-            Type::Module => Array.map(Content.fromModule, nextDocumentation.modules)
-            Type::Store => Array.map(Content.fromStore, nextDocumentation.stores)
-            Type::Enum => Array.map(Content.fromEnum, nextDocumentation.enums)
-          }
-
-        /* Try to show the selected entity. */
-        sequence {
-          nextSelected =
-            entity
-            |> Maybe.map(
-              (name : String) : Maybe(Content) {
-                Array.find(
-                  (item : Content) : Bool { item.name == name },
-                  items)
-              })
-            |> Maybe.flatten()
-            |> Maybe.toResult("Could not find entity!")
-
-          /* If there is a selected entity show it. */
-          next
+          Result::Ok(nextTab) =>
             {
-              documentation = nextDocumentation,
-              selected = nextSelected,
-              page = Page::Entity,
-              tab = nextTab
+              /* Get the converted items from based on the type. */
+              let items =
+                case (nextTab) {
+                  Type::Component => Array.map(nextDocumentation.components, Content.fromComponent)
+                  Type::Provider => Array.map(nextDocumentation.providers, Content.fromProvider)
+                  Type::Record => Array.map(nextDocumentation.records, Content.fromRecord)
+                  Type::Module => Array.map(nextDocumentation.modules, Content.fromModule)
+                  Type::Store => Array.map(nextDocumentation.stores, Content.fromStore)
+                  Type::Enum => Array.map(nextDocumentation.enums, Content.fromEnum)
+                }
+
+              /* Try to show the selected entity. */
+              let nextSelectedMaybe =
+                entity
+                |> Maybe.map(
+                  (name : String) : Maybe(Content) {
+                    Array.find(items, (item : Content) : Bool { item.name == name })
+                  })
+                |> Maybe.flatten()
+
+              case (nextSelectedMaybe) {
+                Maybe::Just(nextSelected) =>
+                  {
+                    /* If there is a selected entity show it. */
+                    await next
+                      {
+                        documentation: nextDocumentation,
+                        selected: nextSelected,
+                        page: Page::Entity,
+                        tab: nextTab
+                      }
+
+                    Window.setScrollTop(0)
+                  }
+
+                Maybe::Nothing =>
+                  case (Array.first(items)) {
+                    Maybe::Nothing => Window.navigate("/" + nextDocumentation.name)
+
+                    Maybe::Just(first) =>
+                      Window.navigate(
+                        "/" + nextDocumentation.name + "/" + Type.path(nextTab) + "/" + first.name)
+                  }
+              }
             }
-
-          Window.setScrollTop(0)
-
-          /* If there is not try to navigate to the first item. */
-        } catch {
-          sequence {
-            first =
-              items
-              |> Array.first()
-              |> Maybe.toResult("Could not find first!")
-
-            /* If there is a first item navigate to it. */
-            Window.navigate(
-              "/" + nextDocumentation.name + "/" + Type.path(nextTab) + "/" + first.name)
-
-            /* If there is not navigate to root. */
-          } catch {
-            Window.navigate("/" + nextDocumentation.name)
-          }
         }
-
-        /* If we could not find a proper type. */
-      } catch {
-        Window.navigate("/" + nextDocumentation.name)
-      }
-
-      /* If we could not the package. */
-    } catch {
-      Window.navigate("/")
     }
   }
 }

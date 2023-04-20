@@ -112,7 +112,7 @@ component Entity {
 
         <Unless condition={Array.isEmpty(arguments)}>
           <div::arguments>
-            <{ Array.map(renderArgument, arguments) }>
+            <{ Array.map(arguments, renderArgument) }>
           </div>
         </Unless>
 
@@ -134,7 +134,7 @@ component Entity {
 
       <If condition={Maybe.isJust(description)}>
         <div::description>
-          <RawHtml content={Maybe.withDefault("", description)}/>
+          <RawHtml content={description or ""}/>
         </div>
       </If>
 

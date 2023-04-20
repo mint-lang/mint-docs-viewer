@@ -67,8 +67,8 @@ component Source {
   }
 
   /* Handles the click event, and toggles the state. */
-  fun toggle (event : Html.Event) : Promise(Never, Void) {
-    next { shown = !shown }
+  fun toggle (event : Html.Event) : Promise(Void) {
+    next { shown: !shown }
   }
 
   /* Renders the component. */

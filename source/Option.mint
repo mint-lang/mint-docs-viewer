@@ -51,14 +51,14 @@ component Option {
 
         <Unless condition={Array.isEmpty(parameters)}>
           <div::parameters>
-            <{ String.join(", ", parameters) }>
+            <{ String.join(parameters, ", ") }>
           </div>
         </Unless>
       </div>
 
       <If condition={Maybe.isJust(description)}>
         <div::description>
-          <RawHtml content={Maybe.withDefault("", description)}/>
+          <RawHtml content={description or ""}/>
         </div>
       </If>
     </div>

@@ -47,7 +47,7 @@ component Use {
         <div::when>"only when:"</div>
 
         <div::code>
-          <Pre code={Maybe.withDefault("", condition)}/>
+          <Pre code={condition or ""}/>
         </div>
       </If>
     </div>

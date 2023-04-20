@@ -30,15 +30,7 @@ component Dashboard {
 
   /* Renders the component. */
   fun render : Html {
-    <div::base>
-      <div::title>"Dashboard"</div>
-
-      <div>
-        <{ packages }>
-      </div>
-    </div>
-  } where {
-    packages =
+    let packages =
       documentations
       |> Array.map((item : Documentation) : String { item.name })
       |> Array.map(
@@ -48,5 +40,13 @@ component Dashboard {
             <{ name }>
           </a>
         })
+
+    <div::base>
+      <div::title>"Dashboard"</div>
+
+      <div>
+        <{ packages }>
+      </div>
+    </div>
   }
 }

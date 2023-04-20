@@ -46,7 +46,7 @@ component Connection {
       <span>" exposing {"</span>
 
       <div::keys>
-        <{ Array.map(renderKey, keys) }>
+        <{ Array.map(keys, renderKey) }>
       </div>
 
       <div>"}"</div>
