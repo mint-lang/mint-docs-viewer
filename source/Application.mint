@@ -21,32 +21,23 @@ store Application {
   /* Loads the documentation. */
   fun load : Promise(Void) {
     if (status == Status::Initial) {
-      case (await Http.send(Http.get("http://localhost:3002/documentation.json"))) {
-        Result::Err => next { status: Status::HttpError }
+      let request =
+        await Http.send(Http.get("http://localhost:3002/documentation.json"))
 
-        Result::Ok(response) =>
-          case (Json.parse(response.body)) {
-            Result::Err => next { status: Status::JsonError }
+      let Result::Ok(response) =
+        request or return next { status: Status::HttpError }
 
-            Result::Ok(json) =>
-              case (decode json as Root) {
-                Result::Err(error) =>
-                  {
-                    Debug.log(Object.Error.toString(error))
-                    next { status: Status::DecodeError }
-                  }
+      let Result::Ok(json) =
+        Json.parse(response.bodyString) or return next { status: Status::JsonError }
 
-                Result::Ok(root) =>
-                  next
-                    {
-                      documentations: root.packages,
-                      status: Status::Ok
-                    }
-              }
-          }
-      }
-    } else {
-      next { }
+      let Result::Ok(root) =
+        decode json as Root or return next { status: Status::DecodeError }
+
+      next
+        {
+          documentations: root.packages,
+          status: Status::Ok
+        }
     }
   }
 

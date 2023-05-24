@@ -1,6 +1,6 @@
 {
   "name": "mint-docs-viewer",
-  "mint-version": "0.17.0 <= v < 1.0.0",
+  "mint-version": "0.18.0 <= v < 1.0.0",
   "application": {
     "head": "assets/head.html",
     "icon": "assets/icon.png",
